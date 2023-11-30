@@ -1,6 +1,6 @@
 h2{
     color:rgb(213, 85, 85);
-    background-color: rgb(107, 85, 85);
+    background-color: rgb(175, 121, 121);
     text-align:center;
     width:75%;
 }
@@ -19,7 +19,7 @@ textarea{
 
 #submit_button {
     color: rgb(47, 20, 220);
-    background-color: rgb(42, 41, 44);
+    background-color: rgb(61, 23, 137);
 }
 
 #answer_text{
