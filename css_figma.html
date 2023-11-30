@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="jp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>投稿画面</title>
+    <link rel="stylesheet" href="css_figma.css" >
+</head>
+
+<body>
+        <a href=質問画面に戻る/a>
+
+        {% for answer_log_data in answer_log_data_list %}
+        <!-- テーブル形式で回答データを表示 -->
+        <p>
+            <table>
+                <tbody>
+                    <tr>
+                        <td nowrap>写真</td>
+                        <td>{{ answer_log_data["date"] }}(日付) or id</td>
+                        <td>{{ answer_log_data["faculty"] }}</td><!--学部-->
+                    </tr>
+                    <tr>
+                        <td nowrap>質問内容</td>
+                        <td>{{ answer_log_data["question"]|safe }}</td><!--質問内容-->
+                        <td>gggg</td>
+                    </tr>
+                    <tr>
+                        <td nowrap>♡</td>
+                        <td>as</td>
+                        <td><button>返信</button></td><!--返信ボタン-->
+                    </tr>
+                </tbody>
+            </table>
+        </p>
+        {% endfor %}
+</body>
+
+</html>
