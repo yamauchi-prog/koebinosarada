@@ -18,7 +18,10 @@ textarea{
 
 
 #submit_button {
-    color: crimson;
-    background-color: beige;
+    color: rgb(47, 20, 220);
+    background-color: rgb(42, 41, 44);
 }
 
+#answer_text{
+    background-color: blue;
+}
