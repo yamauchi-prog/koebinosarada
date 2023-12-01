@@ -15,14 +15,12 @@ app = Flask(__name__)
 CORS(app)
 app.config['JSON_AS_ASCII'] = False
 
-# 直接HTMLを返す
+# ホームページ
 @app.route("/")
 def home():
         return render_template('question.html')
 
-    # return send_file("templates/question.html")
-
-# 質問を受け付けるルーティング
+# 質問を受けつけるルーティング
 @app.route('/answer', methods=['POST', 'OPTIONS'])
 def submitQuestion():
     if request.method == 'POST':
@@ -35,13 +33,11 @@ def submitQuestion():
 
             ref = db.collection('answer_log')
             new_doc = ref.document()
-            x = datetime.datetime.now(pendulum.timezone('Asia/Tokyo'))
-            print(x)
             new_doc.set({
                 'id': new_doc.id,
                 'faculty': faculty,
                 'question': question_sentence,
-                'date': x,
+                'date': datetime.datetime.now(pendulum.timezone('Asia/Tokyo')),
                 'like': 0
             })
 
@@ -52,5 +48,6 @@ def submitQuestion():
             print(f"Error processing request: {e}")
             return jsonify({'error': 'Internal server error'}), 500
 
+#Flask起動
 if __name__ == '__main__':
     app.run(debug=True, port='5001')
