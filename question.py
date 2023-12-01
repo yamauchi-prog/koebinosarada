@@ -20,7 +20,7 @@ app.config['JSON_AS_ASCII'] = False
 def home():
         return render_template('question.html')
 
-# 質問を受け付けるルーティング
+# 質問を受けつけるルーティング
 @app.route('/answer', methods=['POST', 'OPTIONS'])
 def submitQuestion():
     if request.method == 'POST':
