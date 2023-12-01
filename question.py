@@ -1,8 +1,9 @@
-# モジュールのインポート
+from flask import Flask, render_template, request, jsonify, send_file
+from flask_cors import CORS
 import datetime
-from flask import Flask, request, render_template, jsonify
 import firebase_admin
-from firebase_admin import credentials, firestore
+from firebase_admin import credentials, firestore, initialize_app
+import pendulum
 
 # firebaseへの接続準備
 cred = credentials.Certificate('./hacku-adminsdk.json')
@@ -11,35 +12,45 @@ db = firestore.client()
 
 # Flaskの初期化
 app = Flask(__name__)
+CORS(app)
 app.config['JSON_AS_ASCII'] = False
 
-# ホームページ
+# 直接HTMLを返す
 @app.route("/")
 def home():
-    return render_template('question.html')
+        return render_template('question.html')
 
-# 有名人からの回答を得るルーティング
-@app.route('/answer', methods=['POST'])
-def getAnswer():
+    # return send_file("templates/question.html")
+
+# 質問を受け付けるルーティング
+@app.route('/answer', methods=['POST', 'OPTIONS'])
+def submitQuestion():
     if request.method == 'POST':
-        # リクエスト情報の取得
-        faculty = request.form.get('faculty')
-        question_sentence = request.form.get('question_sentence')
+        try:
+            request_data = request.json
+            faculty = request_data.get('faculty')
+            question_sentence = request_data.get('question_sentence')
 
-        # 得られたデータをFirestoreへ保存
-        ref = db.collection('answer_log')
-        new_doc = ref.document()
-        new_doc.set({
-            'id': new_doc.id,
-            'faculty': faculty,
-            'question': question_sentence,
-            'date': datetime.datetime.today(),
-            'like': 0
-        })
+            print(f"Received data - Faculty: {faculty}, Question: {question_sentence}")
+
+            ref = db.collection('answer_log')
+            new_doc = ref.document()
+            x = datetime.datetime.now(pendulum.timezone('Asia/Tokyo'))
+            print(x)
+            new_doc.set({
+                'id': new_doc.id,
+                'faculty': faculty,
+                'question': question_sentence,
+                'date': x,
+                'like': 0
+            })
 
         # フロントエンドへ結果を渡す
-        return jsonify({'answer': '質問が受け付けられました。'})
+            return jsonify({'answer': '質問が受け付けられました。'})
 
-# Flaskサーバーを起動する
+        except Exception as e:
+            print(f"Error processing request: {e}")
+            return jsonify({'error': 'Internal server error'}), 500
+
 if __name__ == '__main__':
-    app.run(debug=True, port=5001)
+    app.run(debug=True, port='5001')
