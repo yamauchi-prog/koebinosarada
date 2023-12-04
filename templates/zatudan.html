@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="jp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='cssファイル名') }}">
+    <!--8行目のcssファイル名を遼成お願い-->
+    <title>AI Respondent</title>
+</head>
+
+<body> 
+    <form id="content-question" method="post">
+        
+        <h2>学部選択</h2> <!--色、背景を変更-->
+        <select name="faculty" class="form-select" > <!--中央寄せ-->
+            <option value="情報工学部情報工学科">
+                情報工学部情報工学科
+            </option>
+            <option value="都市情報学部都市情報学科">
+                都市情報学部都市情報学科
+            </option>
+
+        </select>
+        
+        <h2>雑談を書く</h2> <!--色、背景を変更-->
+        <textarea name="question_sentence" cols="50" rows="3" placeholder="例: おはようございます"
+            required></textarea>
+
+        <div>
+            <button type="submit" id="submit_button">雑談を投稿</button>
+        </div>
+    </form>
+    <div id="answer_text"></div>
+
+    <script>
+        // elementを取得
+        const button = document.getElementById("submit_button");
+        const answerText = document.getElementById("answer_text");
+        const form = document.getElementById("content-question");
+
+// バックエンドに対して回答データをリクエスト
+form.addEventListener("submit", event => {
+    // ページを移動する処理を抑制
+    event.preventDefault();
+
+    // ★formから選択された人物とテキストを取得
+    const faculty = form.faculty.value;
+    const question_sentence = form.question_sentence.value;
+
+    // ★回答フォームに文字列を書き込み
+    answerText.innerHTML = `${faculty}での質問：「${question_sentence}」`;
+
+    // ★質問時の情報をJSONに変換する。
+    const postData = {
+        "faculty": faculty,
+        "question_sentence": question_sentence
+    };
+
+// バックエンドに対して回答データをリクエスト
+fetch("http://127.0.0.1:5001/answer", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json; charset=utf-8",
+    },
+    body: JSON.stringify(postData)
+})
+    .then(response => {
+        // 回答データをjson形式で取得
+        return response.json();
+    })
+    .then(data => {
+        // テキストボックスに回答データを反映
+        answerText.innerHTML = data.answer;
+    })
+    .finally(() => {
+        console.log("request complete!");
+    });
+});
+
+    </script>
+
+</body>
+
+</html>
