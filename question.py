@@ -48,6 +48,41 @@ def submitQuestion():
             print(f"Error processing request: {e}")
             return jsonify({'error': 'Internal server error'}), 500
 
+# 過去の回答を取得するルーティング
+@app.route('/dblogpage')
+def dblogpage():
+
+    # Firestoreから並び替えたデータを取得する準備
+    ref = db.collection('answer_log')
+    ref = ref.order_by('date', direction=firestore.Query.DESCENDING)
+    docs = ref.stream()
+
+    # Firestoreからデータを取得
+    answer_log_data_list = []
+    for doc in docs:
+        # 取得したデータをpythonで取り扱えるように変換
+        doc_dict = doc.to_dict()
+
+        # 取得したデータの改行コードをHTMLの改行に変換
+        question = doc_dict['question'].replace('\n', '<br>')
+        
+        # 取得してきたデータをJsonのリストに変換
+        append_data = {
+            'id': doc_dict['id'],
+            'faculty': doc_dict['faculty'],
+            'question': question,
+            'date': doc_dict['date'].strftime('%Y/%m/%d %H:%M:%S'),
+            'like': doc_dict['like']
+        }
+        answer_log_data_list.append(append_data)
+    
+    # テンプレートに取得データのJsonリストを渡す
+    return render_template(
+        'question_dblog.html',
+        answer_log_data_list = answer_log_data_list
+    )
+
+
 #Flask起動
 if __name__ == '__main__':
     app.run(debug=True, port='5001')
