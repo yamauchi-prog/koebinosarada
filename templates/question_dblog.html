@@ -3,18 +3,19 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>投稿画面</title>
-    <link rel="stylesheet" href="question_dblog.css" >
+    <link rel="stylesheet" href="{{ url_for('static', filename='question_dblog.css') }}" >
 </head>
 
 <body>
-        <a href=質問画面に戻る/a>
+        <a href="/">質問画面に戻る</a>
 
         {% for answer_log_data in answer_log_data_list %}
         <!-- テーブル形式で回答データを表示 -->
         <p>
-            <table>
+            <table border="1">
                 <tbody>
                     <tr>
                         <td nowrap>写真</td>
