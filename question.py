@@ -28,9 +28,6 @@ def submitQuestion():
             request_data = request.json
             faculty = request_data.get('faculty')
             question_sentence = request_data.get('question_sentence')
-
-            print(f"Received data - Faculty: {faculty}, Question: {question_sentence}")
-
             ref = db.collection('answer_log')
             new_doc = ref.document()
             new_doc.set({
@@ -51,10 +48,13 @@ def submitQuestion():
 # 過去の回答を取得するルーティング
 @app.route('/dblogpage')
 def dblogpage():
+    db = firestore.client()
 
     # Firestoreから並び替えたデータを取得する準備
     ref = db.collection('answer_log')
+
     ref = ref.order_by('date', direction=firestore.Query.DESCENDING)
+    
     docs = ref.stream()
 
     # Firestoreからデータを取得
@@ -79,8 +79,9 @@ def dblogpage():
     # テンプレートに取得データのJsonリストを渡す
     return render_template(
         'question_dblog.html',
-        answer_log_data_list = answer_log_data_list
+        answer_log_data_list=answer_log_data_list
     )
+
 
 
 #Flask起動
