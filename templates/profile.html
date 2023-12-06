@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="jp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='cssファイル名') }}">
+    <!--8行目のcssファイル名を遼成お願い-->
+    <title>AI Respondent</title>
+</head>
+
+<p>
+    <img src="c:\Users\koki_\OneDrive\画像\Hack U\画像2.png" width="300px"><br>
+
+    <h1>学部選択</h1> <!--色、背景を変更-->
+        <select name="faculty" class="form-select" > <!--中央寄せ-->
+            <option value="情報工学部情報工学科">
+                情報工学部情報工学科
+            </option>
+            <option value="都市情報学部都市情報学科">
+                都市情報学部都市情報学科
+            </option>
+        </select>
+
+
+</p>
+
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>指定した画像から選択</title>
+</head>
+<body>
+  <h2>画像を選択してください:</h2>
+  
+  <!-- 画像リスト -->
+  <div id="imageList">
+    <img src="c:\Users\koki_\OneDrive\画像\Hack U\画像2.png" width="300px" alt="Image 1" onclick="selectImage('image1.jpg')">
+    <img src="image2.jpg" alt="Image 2" onclick="selectImage('image2.jpg')">
+    <img src="image3.jpg" alt="Image 3" onclick="selectImage('image3.jpg')">
+    <!-- 追加の画像をここに追加 -->
+  </div>
+  
+  <h2>選択した画像:</h2>
+  <!-- 選択された画像を表示するための場所 -->
+  <div id="selectedImage"></div>
+
+  <script>
+    function selectImage(imageSrc) {
+      // 選択された画像を表示するための要素を取得
+      const selectedImageDiv = document.getElementById("selectedImage");
+
+      // 選択された画像を表示する
+      selectedImageDiv.innerHTML = `<img src="${imageSrc}" alt="選択した画像">`;
+    }
+  </script>
+</body>
+</html>
