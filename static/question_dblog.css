@@ -1,3 +1,11 @@
 button {
     background-color:#B6B6B0;  
 }
+/* スマートフォン画面用のスタイル */
+@media screen and (max-width: 480px) {
+    td {
+        width: 394px; /* 幅の指定 */
+        height: auto; /* 高さは自動調整 */
+        white-space: normal; /* テキストの折り返しを許可 */
+    }
+}
