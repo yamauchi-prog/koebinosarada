@@ -31,17 +31,17 @@
             <table border="1">
                 <tbody>
                     <tr>
-                        <td nowrap>アイコン</td>
+                        <td rowspan="1" nowrap>アイコン</td>
                         <td>{{ answer_log_data["date"] }}(日付)</td>
                         <td>{{ answer_log_data["faculty"] }}</td><!--学部-->
                     </tr>
                     <tr>
                         <td nowrap>質問内容</td>
-                        <td>{{ answer_log_data["question"]|safe }}</td><!--質問内容-->
+                        <td colspan="2">{{ answer_log_data["question"]|safe }}</td><!--質問内容-->
                     </tr>
                     <tr>
-                        <td nowrap>♡</td>
-                        <td><button>返信</button></td><!--返信ボタン-->
+                        <td><button>♡</button></td><!--♡ボタン-->
+                        <td colspan="2"><button style="float: right; margin-right: 5%;">返信</button></td><!--返信ボタン-->
                     </tr>
                 </tbody>
             </table>
