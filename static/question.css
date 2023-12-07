@@ -1,6 +1,6 @@
 h2{
-    color:rgb(213, 85, 85);
-    background-color: rgb(107, 85, 85);
+    color:#000000;
+    background-color:#9FD5EC;
     text-align:center;
     width:75%;
 }
@@ -18,7 +18,10 @@ textarea{
 
 
 #submit_button {
-    color: crimson;
-    background-color: beige;
+    color:#000000;
+    background-color:#43C660;
+    border-radius: 10px; 
+    padding: 8px 16px; 
+    border: none; 
+    outline: none; 
 }
-
