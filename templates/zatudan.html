@@ -50,7 +50,7 @@ form.addEventListener("submit", event => {
     const question_sentence = form.question_sentence.value;
 
     // ★回答フォームに文字列を書き込み
-    answerText.innerHTML = `${faculty}での質問：「${question_sentence}」`;
+    answerText.innerHTML = `${faculty}からのチャット：「${question_sentence}」`;
 
     // ★質問時の情報をJSONに変換する。
     const postData = {
