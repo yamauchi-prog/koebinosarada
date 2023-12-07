@@ -34,6 +34,34 @@
         </select>
     </form>
 
+    <script>
+    const faculty_r = document.getElementById('select-content').elements.faculty_r.value;
+         // 質問時の情報をJSONに変換する
+        const postData = {
+            "faculty_r": faculty_r
+        };
+
+        // バックエンドに対して回答データをリクエスト
+        fetch("dblogpage", {
+            method: "POST",
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+            body: JSON.stringify(postData)
+        })
+            .then(response => {
+                // 回答データをjson形式で取得
+                return response.json();
+            })
+            .then(data => {
+                // テキストボックスに回答データを反映
+                answer_log_data_list = data.answer_log_data_list; // レスポンスからデータを取得
+                console.log(answer_log_data_list); // デバッグ用
+
+            })
+            .finally(() => {
+                // 回答完了をログに残す
+                console.log("request complete!")
+            });
+    </script>
 
         {% for answer_log_data in answer_log_data_list %}
         <!-- テーブル形式で回答データを表示 -->
