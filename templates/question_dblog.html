@@ -9,8 +9,18 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='question_dblog.css') }}" >
 </head>
 
+<style>/*「質問する」に関してはここを編集*/
+    .db-footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    /* background-color: #f0f0f0; フッターの背景色 */
+    padding: 10px; /* 適切な余白を追加 */
+    margin-bottom:35px;/*下に余白35pxを入れる*/
+}
+</style>
+
 <body>
-        <a href="/">質問画面に戻る</a>
 
     <form id="select-content" method="post">
         <h2>学部選択</h2> 
@@ -48,7 +58,9 @@
         </p>
         {% endfor %}
         {% include 'footer.html' %}
-
-</body>
+        <footer class="db-footer">
+            <a href="{{ url_for('home') }}">質問する</a>
+        </footer>
+        </body>
 
 </html>
