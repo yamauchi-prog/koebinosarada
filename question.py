@@ -46,7 +46,7 @@ def submitQuestion():
             return jsonify({'error': 'Internal server error'}), 500
 
 # 過去の回答を取得するルーティング
-@app.route('/dblogpage')
+@app.route('/dblogpage', methods=['GET', 'POST'])
 def dblogpage():
     db = firestore.client()
 
@@ -55,8 +55,14 @@ def dblogpage():
 
     ref = ref.order_by('date', direction=firestore.Query.DESCENDING)
     
-    docs = ref.stream()
 
+
+    if request.method == 'POST':
+        request_data = request.json
+        faculty_r = request_data.get('faculty_r')
+        ref = ref.where('faculty', '==', faculty_r)
+
+    docs = ref.stream()
     # Firestoreからデータを取得
     answer_log_data_list = []
     for doc in docs:
