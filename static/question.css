@@ -20,8 +20,30 @@ textarea{
 #submit_button {
     color:#000000;
     background-color:#43C660;
+    float:right;
     border-radius: 10px; 
     padding: 8px 16px; 
     border: none; 
     outline: none; 
+}
+/* スマートフォン画面用のスタイル */
+@media screen and (max-width: 480px) {
+    h2, .form-select, textarea {
+        width: 100%; /* 幅を100%に設定 */
+        margin: 0 auto; /* 左右の余白を自動的に設定してセンタリング */
+        text-align: center; /* テキストを中央寄せ */
+        box-sizing: border-box; /* paddingやborderを含めた要素のサイズを指定 */
+    }
+}
+/* 各要素の間に間隔を設定 */
+h2,
+.form-select,
+textarea,
+#submit_button {
+    margin-bottom: 15px; /* 任意の間隔を設定 */
+}
+
+/* 最後の要素（質問投稿ボタン）の下に余白を追加 */
+#submit_button {
+    margin-bottom: 30px; /* 任意の間隔を設定 */
 }
