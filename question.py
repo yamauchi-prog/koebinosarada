@@ -34,6 +34,9 @@ def zatudan():
 @app.route("/profile", methods=['GET'])
 def profile():
         return render_template('profile.html')
+@app.route('/iconimage')
+def iconimage():
+        return send_file('icon/image1.png', mimetype='image1/png')
 
 
 # 質問を受けつけるルーティング
