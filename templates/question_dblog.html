@@ -19,7 +19,7 @@
     margin-bottom:35px;/*下に余白35pxを入れる*/
 }
     .push{
-        height: 50px;
+        height: 80px;
     }
 </style>
 
@@ -113,5 +113,8 @@ form.addEventListener("submit", event => {
 <footer class="db-footer">
     <a href="{{ url_for('home') }}" class="ask-question-btn">質問する</a>
 </footer>
+<div class="push"></div>
+{% include 'footer.html' %}
+
 </body>
 </html>
