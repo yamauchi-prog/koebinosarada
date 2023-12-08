@@ -25,6 +25,16 @@ def home():
 def inquiry():
         return render_template('inquiry.html')
 
+# 雑談
+@app.route("/zatudan", methods=['GET'])
+def zatudan():
+        return render_template('zatudan.html')
+
+# プロフィール
+@app.route("/profile", methods=['GET'])
+def profile():
+        return render_template('profile.html')
+
 
 # 質問を受けつけるルーティング
 @app.route('/answer', methods=['POST', 'OPTIONS'])
