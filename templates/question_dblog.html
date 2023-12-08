@@ -80,7 +80,7 @@ form.addEventListener("submit", event => {
 });
     </script>
 
-
+<div class="-wrapper">
         {% for answer_log_data in answer_log_data_list %}
         <!-- テーブル形式で回答データを表示 -->
         <p>
@@ -109,11 +109,9 @@ form.addEventListener("submit", event => {
             </table>
         </p>
         {% endfor %}
-        <div class="push"></div>
-        {% include 'footer.html' %}
-        <footer class="db-footer">
-            <a href="{{ url_for('home') }}">質問する</a>
-        </footer>
-        </body>
-
+</div>
+<footer class="db-footer">
+    <a href="{{ url_for('home') }}" class="ask-question-btn">質問する</a>
+</footer>
+</body>
 </html>
