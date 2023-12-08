@@ -9,3 +9,50 @@ button {
         white-space: normal; /* テキストの折り返しを許可 */
     }
 }
+/* フッター内の質問するボタンのスタイル */
+.db-footer {
+    position: fixed;
+    bottom: 20px; /* 画面下からの距離を調整 */
+}
+
+/* 質問するボタンの共通スタイル */
+.ask-question-btn {
+    float: right; /* 右側に浮動 */
+    margin-right: 20px; /* 画面右からの距離を調整 */ display: inline-block;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #43C660;
+    color:#000000;
+    text-decoration: none;
+}
+/* パソコン向けのスタイル */
+@media (min-width: 768px) {
+    .ask-question-btn {
+        width:50%;
+        margin:0 auto;
+    }
+}
+
+/* スマートフォン向けのスタイル */
+@media (max-width: 398px) {
+    .ask-question-btn {
+        text-align: center; /* ボタンを中央に配置 */
+        margin: 20px auto; /* 上下左右に余白を持たせる */
+        display: block; /* ボタンをブロック要素に変更 */
+        float:right;
+        margin-right:20px;
+    }
+}
+
+/* パソコン向けのスタイル */
+@media (min-width: 768px) {
+    .table-wrapper {
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%; /* 必要に応じて幅を指定しま
+    }
+
+    .db-footer {
+        text-align: center; /* フッター内の要素を中央に配置 */
+    }
+}

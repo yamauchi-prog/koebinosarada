@@ -26,6 +26,7 @@ textarea{
     border: none; 
     outline: none; 
 }
+
 /* スマートフォン画面用のスタイル */
 @media screen and (max-width: 480px) {
     h2, .form-select, textarea {
