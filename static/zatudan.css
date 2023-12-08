@@ -1,0 +1,10 @@
+#submit_button {
+    background-color:#43C660; /* ボタンの背景色を青色に設定 */
+    color:#000000; /* ボタンのテキスト色を白色に設定 */
+    /* その他のスタイルを追加できます（例: パディング、ボーダー、角丸など） */
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    /* カーソルをポインターに変更する */
+    cursor: pointer;
+}
