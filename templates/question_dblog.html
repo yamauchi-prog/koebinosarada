@@ -40,11 +40,14 @@
         </div>
 
     </form>
+    <div id="answer_text"></div>
 
     <script>
 
         const button = document.getElementById("select_button");
         const form = document.getElementById("select-content");
+        const answerText = document.getElementById("answer_text");
+
 
 form.addEventListener("submit", event => {
     // ページを移動する処理を抑制
@@ -72,6 +75,8 @@ form.addEventListener("submit", event => {
         answer_log_data_list = data.answer_log_data_list; // レスポンスからデータを取得
         console.log("answer_log_data_list"); // デバッグ用
         console.log(answer_log_data_list);
+        answerText.innerHTML = data.answer;
+
     })
     .finally(() => {
         // 回答完了をログに残す

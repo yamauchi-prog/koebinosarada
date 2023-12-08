@@ -108,8 +108,8 @@ def dblogpage():
         answer_log_data_list=answer_log_data_list
     )
 
-# 過去の回答を取得するルーティング
-@app.route('/dbselect', methods=['POST'])
+# 過去の回答を取得するルーティング(NEW)
+@app.route('/dbselect', methods=['POST', 'OPTIONS'])
 def dbselect():
     db = firestore.client()
 
