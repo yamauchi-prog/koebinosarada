@@ -61,6 +61,7 @@ def dblogpage():
         request_data = request.json
         faculty_r = request_data.get('faculty_r')
         ref = ref.where('faculty', '==', faculty_r)
+        print('データを受信しました')
 
     docs = ref.stream()
     # Firestoreからデータを取得
