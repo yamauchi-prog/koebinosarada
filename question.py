@@ -11,7 +11,7 @@ firebase_app = firebase_admin.initialize_app(cred)
 db = firestore.client()
 
 # Flaskの初期化
-app = Flask(__name__)
+app = Flask(__name__,static_folder='./static/icon')
 CORS(app)
 app.config['JSON_AS_ASCII'] = False
 
@@ -34,6 +34,10 @@ def zatudan():
 @app.route("/profile", methods=['GET'])
 def profile():
         return render_template('profile.html')
+@app.route('/iconimage')
+def iconimage():
+        return send_file('../static/icon/image1.png', mimetype='static/icon/image1.png')
+
 
 
 # 質問を受けつけるルーティング
