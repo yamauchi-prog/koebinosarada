@@ -13,7 +13,8 @@
 <body> 
     <form id="content-question" method="post">
         
-        <h2>学部選択</h2> <!--色、背景を変更-->
+    <div class="container">
+        <h2 class="custom-heading">学部選択</h2> <!--色、背景を変更-->
         <select name="faculty" class="form-select" > <!--中央寄せ-->
             <option value="情報工学部情報工学科">
                 情報工学部情報工学科
@@ -24,10 +25,10 @@
 
         </select>
         
-        <h2>雑談を書く</h2> <!--色、背景を変更-->
+        <h2 class="custom-heading">雑談を書く</h2> <!--色、背景を変更-->
         <textarea name="question_sentence" cols="50" rows="3" placeholder="例: おはようございます"
             required></textarea>
-
+    </div>
         <div>
             <button type="submit" id="submit_button">雑談を投稿</button>
         </div>
