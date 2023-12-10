@@ -160,7 +160,7 @@ def dbselect():
 
 
 
-# ↓山内変更↓
+# ↓　山内変更　↓
 # 回答を受けつけるルーティング
 @app.route('/response', methods=['POST', 'OPTIONS'])
 def submitAnswer():
