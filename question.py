@@ -38,6 +38,11 @@ def profile():
 def iconimage():
         return send_file('../static/icon/image1.png', mimetype='static/icon/image1.png')
 
+# 返信
+@app.route("/response")
+def response():
+        return render_template('question_answer.html')
+
 
 
 # 質問を受けつけるルーティング
