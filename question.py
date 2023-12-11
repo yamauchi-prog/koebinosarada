@@ -80,16 +80,6 @@ def dblogpage():
 
     ref = ref.order_by('date', direction=firestore.Query.DESCENDING)
     
-
-
-    # if request.method == 'POST':
-    #     request_data = request.json
-    #     print(request.json)
-    #     faculty_r = request_data.get('faculty_r')
-    #     print(faculty_r)
-    #     ref = ref.where('faculty', '==', faculty_r)
-    #     print('データを受信しました')
-
     docs = ref.stream()
     # Firestoreからデータを取得
     answer_log_data_list = []
@@ -162,6 +152,29 @@ def dbselect():
         'question_dblog.html',
         answer_log_data_list=answer_log_data_list
     )
+
+#★★★↓追加↓★★★（山内が見たらこのコメントは消して良し）
+# 「いいね」をカウントアップするルーティング
+@app.route('/postlike', methods=['POST'])
+def postlike():
+    # 「いいね」の対象となる質問のIDを取得
+    promptJson = request.json
+    answer_log_id = promptJson['id']
+
+    # 質問IDに一致する質問をFirestoreから取得
+    ref = db.collection('answer_log')#question_logに変更する
+    docs = ref.where('id', '==', answer_log_id).stream()
+    
+    # 更新前のデータを取得する。（forだが1回しか処理が実行されない）
+    for doc in docs:
+        doc_dict = doc.to_dict()
+        doc_like = doc_dict['like']
+
+    # 取得した回答の「いいね」をカウントアップ
+    ref.document(answer_log_id).update({'like': doc_like+1})
+
+    # カウントアップ後の「いいね」の値をフロントエンドに渡す
+    return {'result':doc_like+1}
 
 
 
