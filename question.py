@@ -53,7 +53,7 @@ def submitQuestion():
             request_data = request.json
             faculty = request_data.get('faculty')
             question_sentence = request_data.get('question_sentence')
-            ref = db.collection('answer_log')
+            ref = db.collection('answer_log')#question_logに変更する
             new_doc = ref.document()
             new_doc.set({
                 'id': new_doc.id,
@@ -70,13 +70,13 @@ def submitQuestion():
             print(f"Error processing request: {e}")
             return jsonify({'error': 'Internal server error'}), 500
 
-# 過去の回答を取得するルーティング
+# 過去の質問を取得するルーティング
 @app.route('/dblogpage', methods=['GET', 'POST'])
 def dblogpage():
     db = firestore.client()
 
     # Firestoreから並び替えたデータを取得する準備
-    ref = db.collection('answer_log')
+    ref = db.collection('answer_log')#question_logに変更する
 
     ref = ref.order_by('date', direction=firestore.Query.DESCENDING)
     
@@ -117,13 +117,13 @@ def dblogpage():
         answer_log_data_list=answer_log_data_list
     )
 
-# 過去の回答を取得するルーティング(NEW)
+# 過去の質問を選別して取得するルーティング(NEW)
 @app.route('/dbselect', methods=['POST', 'OPTIONS'])
 def dbselect():
     db = firestore.client()
 
     # Firestoreから並び替えたデータを取得する準備
-    ref = db.collection('answer_log')
+    ref = db.collection('answer_log')#question_logに変更する
 
     ref = ref.order_by('date', direction=firestore.Query.DESCENDING)
     
@@ -176,7 +176,7 @@ def submitAnswer():
             answer_sentence = request_data.get('answer_sentence')
             ref = db.collection('response_log')
             new_doc = ref.document()
-            new_doc.set({
+            new_doc.set({#どのidの質問に答えたかも記録する
                 'id': new_doc.id,
                 'faculty': faculty,
                 'answer': answer_sentence,
@@ -223,7 +223,7 @@ def answerpage():
         answer = doc_dict['answer'].replace('\n', '<br>')
         
         # 取得してきたデータをJsonのリストに変換
-        append_data = {
+        append_data = {#どのidの質問に答えたかも記録する
             'id': doc_dict['id'],
             'faculty': doc_dict['faculty'],
             'answer': answer,
