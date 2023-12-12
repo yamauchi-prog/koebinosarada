@@ -153,6 +153,70 @@ def dbselect():
         answer_log_data_list=answer_log_data_list
     )
 
+# 雑談を受けつけるルーティング
+@app.route('/zatudan', methods=['POST', 'OPTIONS'])
+def submitZatudan():
+    if request.method == 'POST':
+        try:
+            request_data = request.json
+            faculty = request_data.get('faculty')
+            question_sentence = request_data.get('question_sentence')
+            ref = db.collection('zatudan_log')#question_logに変更する
+            new_doc = ref.document()
+            new_doc.set({
+                'id': new_doc.id,
+                'faculty': faculty,
+                'question': question_sentence,
+                'date': datetime.datetime.now(pendulum.timezone('Asia/Tokyo')),
+                'like': 0
+            })
+
+        # フロントエンドへ結果を渡す
+            return jsonify({'answer': '雑談が受け付けられました。'})
+
+        except Exception as e:
+            print(f"Error processing request: {e}")
+            return jsonify({'error': 'Internal server error'}), 500
+
+
+# 過去の雑談を取得するルーティング
+@app.route('/zdlogpage', methods=['GET', 'POST'])
+def zdlogpage():
+    db = firestore.client()
+
+    # Firestoreから並び替えたデータを取得する準備
+    ref = db.collection('zatudan_log')
+
+    ref = ref.order_by('date', direction=firestore.Query.DESCENDING)
+    
+    docs = ref.stream()
+    # Firestoreからデータを取得
+    zatudan_log_data_list = []
+    for doc in docs:
+        # 取得したデータをpythonで取り扱えるように変換
+        doc_dict = doc.to_dict()
+
+        # 取得したデータの改行コードをHTMLの改行に変換
+        question = doc_dict['question'].replace('\n', '<br>')
+        
+        # 取得してきたデータをJsonのリストに変換
+        append_data = {
+            'id': doc_dict['id'],
+            'faculty': doc_dict['faculty'],
+            'question': question,
+            'date': doc_dict['date'].strftime('%Y/%m/%d %H:%M:%S'),
+            'like': doc_dict['like']
+        }
+        zatudan_log_data_list.append(append_data)
+        print(zatudan_log_data_list)
+
+    # テンプレートに取得データのJsonリストを渡す
+    return render_template(
+        'zatudan_dblog.html',
+        zatudan_log_data_list=zatudan_log_data_list
+    )
+
+
 #★★★↓追加↓★★★（山内が見たらこのコメントは消して良し）
 # 「いいね」をカウントアップするルーティング
 @app.route('/postlike', methods=['POST'])

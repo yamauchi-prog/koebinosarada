@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="jp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>雑談画面</title>
+    <!--<link rel="stylesheet" href="{{ url_for('static', filename='question_dblog.css') }}" >-->
+    <style>
+        button {
+            background-color:#B6B6B0;  
+        }
+/* スマートフォン画面用のスタイル */
+        @media screen and (max-width: 480px) {
+            td {
+                width: auto; /* 幅の指定 */
+                height: auto; /* 高さは自動調整 */
+                white-space: normal; /* テキストの折り返しを許可 */
+            }
+        }
+/* フッター内の質問するボタンのスタイル */
+        .db-footer {
+            position: fixed;
+            bottom: 20px; /* 画面下からの距離を調整 */
+        }
+
+/* 質問するボタンの共通スタイル */
+        .ask-question-btn {
+            float: right; /* 右側に浮動 */
+            margin-right: 20px; /* 画面右からの距離を調整 */ display: inline-block;
+            padding: 10px 20px;
+            border-radius: 5px;
+            background-color: #43C660;
+            color:#000000;
+            text-decoration: none;
+        }
+/* パソコン向けのスタイル */
+        @media (min-width: 768px) {
+            .ask-question-btn {
+                width:50%;
+                margin:0 auto;
+            }
+        }
+
+/* スマートフォン向けのスタイル */
+        @media (max-width: 398px) {
+            .ask-question-btn {
+                text-align: center; /* ボタンを中央に配置 */
+                margin: 20px auto; /* 上下左右に余白を持たせる */
+                display: block; /* ボタンをブロック要素に変更 */
+                float:right;
+                margin-right:20px;
+            }
+        }
+
+/* パソコン向けのスタイル */
+        @media (min-width: 768px) {
+            .table-wrapper {
+                margin-left: auto;
+                margin-right: auto;
+                width: 100%; /* 必要に応じて幅を指定しま
+            }
+
+            .db-footer {
+                text-align: center; /* フッター内の要素を中央に配置 */
+            }
+        }
+    </style>
+</head>
+
+<style>/*「質問する」に関してはここを編集*/
+    .db-footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    /* background-color: #f0f0f0; フッターの背景色 */
+    padding: 10px; /* 適切な余白を追加 */
+    margin-bottom:35px;/*下に余白35pxを入れる*/
+}
+    .push{
+        height: 80px;
+    }
+</style>
+
+<body>
+
+    {% include 'header.html' %}
+
+    <div style="height: 50px;"></div>
+
+
+    <form id="select-content" method="post">
+        <h2>学部選択</h2> 
+        <select name="faculty_r" class="form-select"> 
+            <option value="情報工学部情報工学科">
+                情報工学部情報工学科
+            </option>
+            <option value="都市情報学部都市情報学科">
+                都市情報学部都市情報学科
+            </option>
+        </select>
+        <div>
+            <button type="submit" id="select_button">学部選択</button>
+        </div>
+
+    </form>
+    <div id="answer_text"></div>
+
+    <script>
+
+        const button = document.getElementById("select_button");
+        const form = document.getElementById("select-content");
+        const answerText = document.getElementById("answer_text");
+
+
+form.addEventListener("submit", event => {
+    // ページを移動する処理を抑制
+    event.preventDefault();
+
+
+    const faculty_r = form.faculty_r.value;
+         // 質問時の情報をJSONに変換する
+    const postData = {
+        "faculty_r": faculty_r
+    };
+
+    // バックエンドに対して回答データをリクエスト
+    fetch("/dbselect", {
+        method: "POST",
+        headers: { "Content-Type": "application/json; charset=utf-8" },
+        body: JSON.stringify(postData)
+    })
+    .then(response => {
+        // 回答データをjson形式で取得
+        return response.json();
+    })
+    .then(data => {
+        // テキストボックスに回答データを反映
+        zatudan_log_data_list = data.zatudan_log_data_list; // レスポンスからデータを取得
+        console.log("zatudan_log_data_list"); // デバッグ用
+        console.log(zatudan_log_data_list);
+        answerText.innerHTML = data.answer;
+
+    })
+    .finally(() => {
+        // 回答完了をログに残す
+        console.log("request complete!")
+    });
+});
+    </script>
+
+<div class="-wrapper">
+        {% for zatudan_log_data in zatudan_log_data_list %}
+        <!-- テーブル形式で回答データを表示 -->
+        <p>
+            <table border="1">
+                <tbody>
+                    <tr>
+                        <td rowspan="1" nowrap><div id="selectedImage"></div></td>
+                        <td>{{ zatudan_log_data["date"] }}</td>
+                        <td>{{ zatudan_log_data["faculty"] }}</td><!--学部-->
+                    </tr>
+                    <tr>
+                        <td nowrap>質問内容</td>
+                        <td colspan="2">{{ zatudan_log_data["question"]|safe }}</td><!--質問内容-->
+                    </tr>
+                    <tr>
+                        <td>
+                            <button id="like-button-{{ zatudan_log_data['id'] }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-suit-heart" viewBox="0 0 16 16">
+                                <path d="m8 6.236-.894-1.789c-.222-.443-.607-1.08-1.152-1.595C5.418 2.345 4.776 2 4 2 2.324 2 1 3.326 1 4.92c0 1.211.554 2.066 1.868 3.37.337.334.721.695 1.146 1.093C5.122 10.423 6.5 11.717 8 13.447c1.5-1.73 2.878-3.024 3.986-4.064.425-.398.81-.76 1.146-1.093C14.446 6.986 15 6.131 15 4.92 15 3.326 13.676 2 12 2c-.777 0-1.418.345-1.954.852-.545.515-.93 1.152-1.152 1.595L8 6.236zm.392 8.292a.513.513 0 0 1-.784 0c-1.601-1.902-3.05-3.262-4.243-4.381C1.3 8.208 0 6.989 0 4.92 0 2.755 1.79 1 4 1c1.6 0 2.719 1.05 3.404 2.008.26.365.458.716.596.992a7.55 7.55 0 0 1 .596-.992C9.281 2.049 10.4 1 12 1c2.21 0 4 1.755 4 3.92 0 2.069-1.3 3.288-3.365 5.227-1.193 1.12-2.642 2.48-4.243 4.38z"/>
+                                </svg>{{ zatudan_log_data['like'] }}
+                            </button>
+                        </td><!--♡ボタン-->
+                        <footer class="an-footer">
+                            <td colspan="2">
+                                <button style="float: right; margin-right: 5%;"><a href="{{ url_for('response') }}">返信</a></button></td><!--返信ボタン-->
+                        </footer>
+                    </tr>
+                </tbody>
+            </table>
+        </p>
+
+        <script>
+
+            // 「いいね」ボタンのelementを取得
+            document.getElementById("like-button-{{ zatudan_log_data['id'] }}").
+                addEventListener("click", ev => {
+    
+                    // 「いいね」ボタンを無効化
+                    document.getElementById("like-button-{{ zatudan_log_data['id'] }}").disabled = true;
+    
+                    // バックエンドに「いいね」のカウントアップをリクエスト
+                    fetch("postlike", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json; charset=utf-8" },
+                        body: JSON.stringify({ "id": "{{ zatudan_log_data['id'] }}" })
+                    })
+                        .then(response => {
+                            // カウントアップ後の「いいね」を取得
+                            return response.json();
+                        })
+                        .then(data => {
+                            // カウントアップ後の「いいね」を「いいね」ボタンに反映
+                            document.getElementById("like-button-{{ zatudan_log_data['id'] }}").innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-suit-heart" viewBox="0 0 16 16"><path d="m8 6.236-.894-1.789c-.222-.443-.607-1.08-1.152-1.595C5.418 2.345 4.776 2 4 2 2.324 2 1 3.326 1 4.92c0 1.211.554 2.066 1.868 3.37.337.334.721.695 1.146 1.093C5.122 10.423 6.5 11.717 8 13.447c1.5-1.73 2.878-3.024 3.986-4.064.425-.398.81-.76 1.146-1.093C14.446 6.986 15 6.131 15 4.92 15 3.326 13.676 2 12 2c-.777 0-1.418.345-1.954.852-.545.515-.93 1.152-1.152 1.595L8 6.236zm.392 8.292a.513.513 0 0 1-.784 0c-1.601-1.902-3.05-3.262-4.243-4.381C1.3 8.208 0 6.989 0 4.92 0 2.755 1.79 1 4 1c1.6 0 2.719 1.05 3.404 2.008.26.365.458.716.596.992a7.55 7.55 0 0 1 .596-.992C9.281 2.049 10.4 1 12 1c2.21 0 4 1.755 4 3.92 0 2.069-1.3 3.288-3.365 5.227-1.193 1.12-2.642 2.48-4.243 4.38z"/></svg>' + data["result"];
+                        }).finally(() => {
+                            console.log("request complete!");
+                        });
+                });
+        </script>
+    
+        {% endfor %}
+</div>
+<footer class="db-footer">
+    <a href="{{ url_for('zatudan') }}" class="ask-question-btn">雑談する</a>
+</footer>
+<div class="push"></div>
+
+
+{% include 'footer.html' %}
+
+</body>
+</html>
