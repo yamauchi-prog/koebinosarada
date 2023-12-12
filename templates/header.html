@@ -6,12 +6,14 @@
         height: 25px;
         background-color: #f0f0f0; /* フッターの背景色 */
         padding: 0px; /* 適切な余白を追加 */
+        padding-top: 5px;
         display:table;
         margin: 0px;
     }
     .l-header li{
         text-align: center;
         display:table-cell;
+        vertical-align: middle; /* 上下中央に寄せる */ 
         width: 1%;
         padding-top: 0px;
         padding-bottom: 0px;
@@ -20,15 +22,13 @@
     .l-header ul{
         margin: 0px;
         padding: 0px;
-        padding-top: 10px;
-        padding-right: 5%;
     }
 </style>
 
 <header class="l-header">
     <ul>
         <li>
-            <img class="logo" src="../logo.png">
+            <img class="logo" src="../icon/logo.png" width="40px" style="border-radius: 10%;">
         </li>
         <li>
             <a href="{{ url_for('inquiry')}}" target="_blank">お問い合わせ</a>
