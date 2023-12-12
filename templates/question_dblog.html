@@ -7,81 +7,138 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>投稿画面</title>
     <!--<link rel="stylesheet" href="{{ url_for('static', filename='question_dblog.css') }}" >-->
-    <style>
-        button {
-            background-color:#B6B6B0;  
-        }
-/* スマートフォン画面用のスタイル */
-        @media screen and (max-width: 480px) {
-            td {
-                width: auto; /* 幅の指定 */
-                height: auto; /* 高さは自動調整 */
-                white-space: normal; /* テキストの折り返しを許可 */
-            }
-        }
-/* フッター内の質問するボタンのスタイル */
-        .db-footer {
-            position: fixed;
-            bottom: 20px; /* 画面下からの距離を調整 */
-        }
-
-/* 質問するボタンの共通スタイル */
-        .ask-question-btn {
-            float: right; /* 右側に浮動 */
-            margin-right: 20px; /* 画面右からの距離を調整 */ display: inline-block;
-            padding: 10px 20px;
-            border-radius: 5px;
-            background-color: #43C660;
-            color:#000000;
-            text-decoration: none;
-        }
-/* パソコン向けのスタイル */
-        @media (min-width: 768px) {
-            .ask-question-btn {
-                width:50%;
-                margin:0 auto;
-            }
-        }
-
-/* スマートフォン向けのスタイル */
-        @media (max-width: 398px) {
-            .ask-question-btn {
-                text-align: center; /* ボタンを中央に配置 */
-                margin: 20px auto; /* 上下左右に余白を持たせる */
-                display: block; /* ボタンをブロック要素に変更 */
-                float:right;
-                margin-right:20px;
-            }
-        }
-
-/* パソコン向けのスタイル */
-        @media (min-width: 768px) {
-            .table-wrapper {
-                margin-left: auto;
-                margin-right: auto;
-                width: 100%; /* 必要に応じて幅を指定しま
-            }
-
-            .db-footer {
-                text-align: center; /* フッター内の要素を中央に配置 */
-            }
-        }
-    </style>
+<<<<<<< HEAD
 </head>
 
 <style>/*「質問する」に関してはここを編集*/
     .db-footer {
     position: fixed;
     bottom: 0;
-    width: 100%;
+    width: 5%;
     /* background-color: #f0f0f0; フッターの背景色 */
-    padding: 10px; /* 適切な余白を追加 */
-    margin-bottom:35px;/*下に余白35pxを入れる*/
+    background-color: #43C660;
+    color: #000000;
+    padding: 10px 20px; /* 適切な余白を追加 */
+    margin-bottom:50px;/*下に余白35pxを入れる*/
+    border-radius: 10px;
+    text-decoration: none;
+    left: 350px;
 }
     .push{
         height: 80px;
     }
 </style>
+=======
+>>>>>>> 4d5f67197e8f043bc70fc0da5b4f09548c98a67b
+
+<style>
+    /* 最初のテーブルに背景色を適用 */
+    table:nth-of-type(1) {
+        background-color: #C1EFB9; /* 背景色を指定 */
+    }
+
+    /* 2番目のテーブルに背景色を適用 */
+    table:nth-of-type(2) {
+        background-color: #F2D5F3; /* 別の背景色を指定 */
+    }
+
+    /* 3番目のテーブルに背景色を適用 */
+    table:nth-of-type(3) {
+        background-color: #B9E8EE; /* 別の背景色を指定 */
+    }
+
+    /* 4番目のテーブルに背景色を適用 */
+    table:nth-of-type(4) {
+        background-color: #C1EFB9; /* 別の背景色を指定 */
+    }
+
+    /* 5番目のテーブルに背景色を適用 */
+    table:nth-of-type(5) {
+        background-color: #F2D5F3; /* 別の背景色を指定 */
+    }
+
+    /* 6番目のテーブルに背景色を適用 */
+    table:nth-of-type(6) {
+        background-color: #B9E8EE; /* 別の背景色を指定 */
+    }
+
+    /* 7番目のテーブルに背景色を適用 */
+    table:nth-of-type(7) {
+        background-color: #C1EFB9; /* 別の背景色を指定 */
+    }
+
+    /* 8番目のテーブルに背景色を適用 */
+    table:nth-of-type(8) {
+        background-color: #F2D5F3; /* 別の背景色を指定 */
+    }
+
+    /* 9番目のテーブルに背景色を適用 */
+    table:nth-of-type(9) {
+        background-color: #B9E8EE; /* 別の背景色を指定 */
+    }
+
+    /* 10番目のテーブルに背景色を適用 */
+    table:nth-of-type(10) {
+        background-color: #C1EFB9; /* 別の背景色を指定 */
+    }
+
+    /* 11番目のテーブルに背景色を適用 */
+    table:nth-of-type(11) {
+        background-color: #F2D5F3; /* 別の背景色を指定 */
+    }
+
+    /* 12番目のテーブルに背景色を適用 */
+    table:nth-of-type(12) {
+        background-color: #B9E8EE; /* 別の背景色を指定 */
+    }
+
+    /* 13番目のテーブルに背景色を適用 */
+    table:nth-of-type(13) {
+        background-color: #C1EFB9; /* 別の背景色を指定 */
+    }
+
+    /* 14番目のテーブルに背景色を適用 */
+    table:nth-of-type(14) {
+        background-color: #F2D5F3; /* 別の背景色を指定 */
+    }
+
+    /* 15番目のテーブルに背景色を適用 */
+    table:nth-of-type(15) {
+        background-color: #B9E8EE; /* 別の背景色を指定 */
+    }
+
+    /* 16番目のテーブルに背景色を適用 */
+    table:nth-of-type(16) {
+        background-color: #C1EFB9; /* 別の背景色を指定 */
+    }
+
+    /* 17番目のテーブルに背景色を適用 */
+    table:nth-of-type(17) {
+        background-color: #F2D5F3; /* 別の背景色を指定 */
+    }
+
+    /* 18番目のテーブルに背景色を適用 */
+    table:nth-of-type(18) {
+        background-color: #B9E8EE; /* 別の背景色を指定 */
+    }
+
+    /* 19番目のテーブルに背景色を適用 */
+    table:nth-of-type(19) {
+        background-color: #C1EFB9; /* 別の背景色を指定 */
+    }
+
+
+
+
+
+
+
+    /* テーブル内の特定のセルに背景色を適用 */
+    table td {
+        padding: 5px; /* セルの余白を設定 */
+    }
+</style>
+
 
 <body>
 
@@ -105,49 +162,47 @@
         </div>
 
     </form>
-    <div id="answer_text"></div>
+    <!-- <div id="answer_text"></div> -->
 
     <script>
-
-        const button = document.getElementById("select_button");
-        const form = document.getElementById("select-content");
-        const answerText = document.getElementById("answer_text");
-
-
-form.addEventListener("submit", event => {
-    // ページを移動する処理を抑制
-    event.preventDefault();
+            const button = document.getElementById("select_button");
+            const form = document.getElementById("select-content");
+            // const answerText = document.getElementById("answer_text");
 
 
-    const faculty_r = form.faculty_r.value;
-         // 質問時の情報をJSONに変換する
-    const postData = {
-        "faculty_r": faculty_r
-    };
+            form.addEventListener("submit", event => {
+                // ページを移動する処理を抑制
+                event.preventDefault();
 
-    // バックエンドに対して回答データをリクエスト
-    fetch("/dbselect", {
-        method: "POST",
-        headers: { "Content-Type": "application/json; charset=utf-8" },
-        body: JSON.stringify(postData)
-    })
-    .then(response => {
-        // 回答データをjson形式で取得
-        return response.json();
-    })
-    .then(data => {
-        // テキストボックスに回答データを反映
-        answer_log_data_list = data.answer_log_data_list; // レスポンスからデータを取得
-        console.log("answer_log_data_list"); // デバッグ用
-        console.log(answer_log_data_list);
-        answerText.innerHTML = data.answer;
 
-    })
-    .finally(() => {
-        // 回答完了をログに残す
-        console.log("request complete!")
-    });
-});
+                const faculty_r = form.faculty_r.value;
+                    // 質問時の情報をJSONに変換する
+                const postData = {
+                    "faculty_r": faculty_r
+                };
+
+                // バックエンドに対して回答データをリクエスト
+                fetch("/dbselect", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json; charset=utf-8" },
+                    body: JSON.stringify(postData)
+                })
+                .then(response => {
+                    // 回答データをjson形式で取得
+                    // return response.json();
+                })
+                .then(data => {
+                    // answerText.innerHTML = data.answer;
+
+                })
+                .finally(() => {
+
+                    // 回答完了をログに残す
+                    console.log("request complete!")
+                });
+            });
+            
+
     </script>
 
 <div class="-wrapper">
@@ -183,7 +238,6 @@ form.addEventListener("submit", event => {
         </p>
 
         <script>
-
             // 「いいね」ボタンのelementを取得
             document.getElementById("like-button-{{ answer_log_data['id'] }}").
                 addEventListener("click", ev => {
