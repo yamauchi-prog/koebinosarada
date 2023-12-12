@@ -2,27 +2,57 @@ h2{
     color:#000000;
     background-color:#9FD5EC;
     text-align:center;
-    width:75%;
+    padding: 0px; /* 必要に応じて余白を追加 */
+    width:50%;
+
 }
 
-.form-select{
+.form-select
+.form-textarea{
     color:rgba(17, 18, 17, 0.525);
     font-weight:900;
-    width:75%;
-    text-align:center;
-}
+    width:50%;
+    padding: 10px; /* 必要に応じて余白を追加 */
+    display: block; /* ブロック要素に変更 */
 
-textarea{
-    width:75%;
 }
-
 
 #submit_button {
     color:#000000;
     background-color:#43C660;
+<<<<<<< HEAD
     right:30px;
     border-radius: 10px; 
     padding: 8px 16px; 
     border: none; 
     outline: none; 
 }
+=======
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    /* カーソルをポインターに変更する */
+    cursor: pointer;
+    display: block; /* ボタンをブロック要素に変更 */
+    margin: 0 auto; /* 中央寄せ */
+    text-align: center; /* テキストを中央揃え */
+
+}
+
+/* スマートフォン画面用のスタイル */
+@media screen and (max-width: 480px) {
+    h2, .form-select, textarea {
+        width: 100%; /* 幅を100%に設定 */
+        margin: 0 auto; /* 左右の余白を自動的に設定してセンタリング */
+        text-align: center; /* テキストを中央寄せ */
+        box-sizing: border-box; /* paddingやborderを含めた要素のサイズを指定 */
+    }
+}
+/* 全ての要素の角を丸くする */
+.container,
+.custom-heading,
+.form-select,
+.form-textarea {
+    border-radius: 5px; /* 丸みの強さを指定 */
+}
+>>>>>>> 4d5f67197e8f043bc70fc0da5b4f09548c98a67b
