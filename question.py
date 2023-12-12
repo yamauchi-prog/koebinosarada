@@ -158,7 +158,7 @@ def submitZatudan():
             request_data = request.json
             faculty = request_data.get('faculty')
             question_sentence = request_data.get('question_sentence')
-            ref = db.collection('zatudan_log')#question_logに変更する
+            ref = db.collection('zatudan_log')
             new_doc = ref.document()
             new_doc.set({
                 'id': new_doc.id,
