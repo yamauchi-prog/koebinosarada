@@ -22,7 +22,7 @@
     margin-bottom:50px;/*下に余白35pxを入れる*/
     border-radius: 10px;
     text-decoration: none;
-    left: 350px;
+    left: 500px;
 }
     .push{
         height: 80px;
@@ -127,16 +127,19 @@
         background-color: #C1EFB9; /* 別の背景色を指定 */
     }
 
-
-
-
-
-
-
     /* テーブル内の特定のセルに背景色を適用 */
     table td {
         padding: 5px; /* セルの余白を設定 */
     }
+
+    table {
+        border-collapse: collapse; /* セルの境界線を結合して一本化 */
+    }
+
+    td, th {
+        border: none; /* セルの境界線を削除 */
+    }
+
 </style>
 
 
