@@ -1,14 +1,15 @@
 button {
     background-color:#B6B6B0;  
 }
-/* スマートフォン画面用のスタイル */
-@media screen and (max-width: 480px) {
-    td {
-        width: auto; /* 幅の指定 */
-        height: auto; /* 高さは自動調整 */
-        white-space: normal; /* テキストの折り返しを許可 */
-    }
-}
+<<<<<<< HEAD
+/* 学部選択のラベル部分に背景色を付ける */
+#select-content h2 {
+    background-color: #43C660; /* 背景色を指定 */
+    color: #FFFFFF; /* テキスト色を指定 */
+    padding: 5px; /* 適切な余白を追加 */
+    display: inline-block; /* インラインブロック要素に設定 */
+    border-radius: 5px; /* 角丸にする場合、必要に応じて追加 */
+=======
 /* フッター内の質問するボタンのスタイル */
 .db-footer {
     position: fixed;
@@ -24,35 +25,5 @@ button {
     background-color: #43C660;
     color:#000000;
     text-decoration: none;
-}
-/* パソコン向けのスタイル */
-@media (min-width: 768px) {
-    .ask-question-btn {
-        width:50%;
-        margin:0 auto;
-    }
-}
-
-/* スマートフォン向けのスタイル */
-@media (max-width: 398px) {
-    .ask-question-btn {
-        text-align: center; /* ボタンを中央に配置 */
-        margin: 20px auto; /* 上下左右に余白を持たせる */
-        display: block; /* ボタンをブロック要素に変更 */
-        float:right;
-        margin-right:20px;
-    }
-}
-
-/* パソコン向けのスタイル */
-@media (min-width: 768px) {
-    .table-wrapper {
-        margin-left: auto;
-        margin-right: auto;
-        width: 100%; /* 必要に応じて幅を指定しま
-    }
-
-    .db-footer {
-        text-align: center; /* フッター内の要素を中央に配置 */
-    }
+>>>>>>> 4d5f67197e8f043bc70fc0da5b4f09548c98a67b
 }
