@@ -105,49 +105,47 @@
         </div>
 
     </form>
-    <div id="answer_text"></div>
+    <!-- <div id="answer_text"></div> -->
 
     <script>
-
-        const button = document.getElementById("select_button");
-        const form = document.getElementById("select-content");
-        const answerText = document.getElementById("answer_text");
-
-
-form.addEventListener("submit", event => {
-    // ページを移動する処理を抑制
-    event.preventDefault();
+            const button = document.getElementById("select_button");
+            const form = document.getElementById("select-content");
+            // const answerText = document.getElementById("answer_text");
 
 
-    const faculty_r = form.faculty_r.value;
-         // 質問時の情報をJSONに変換する
-    const postData = {
-        "faculty_r": faculty_r
-    };
+            form.addEventListener("submit", event => {
+                // ページを移動する処理を抑制
+                event.preventDefault();
 
-    // バックエンドに対して回答データをリクエスト
-    fetch("/dbselect", {
-        method: "POST",
-        headers: { "Content-Type": "application/json; charset=utf-8" },
-        body: JSON.stringify(postData)
-    })
-    .then(response => {
-        // 回答データをjson形式で取得
-        return response.json();
-    })
-    .then(data => {
-        // テキストボックスに回答データを反映
-        answer_log_data_list = data.answer_log_data_list; // レスポンスからデータを取得
-        console.log("answer_log_data_list"); // デバッグ用
-        console.log(answer_log_data_list);
-        answerText.innerHTML = data.answer;
 
-    })
-    .finally(() => {
-        // 回答完了をログに残す
-        console.log("request complete!")
-    });
-});
+                const faculty_r = form.faculty_r.value;
+                    // 質問時の情報をJSONに変換する
+                const postData = {
+                    "faculty_r": faculty_r
+                };
+
+                // バックエンドに対して回答データをリクエスト
+                fetch("/dbselect", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json; charset=utf-8" },
+                    body: JSON.stringify(postData)
+                })
+                .then(response => {
+                    // 回答データをjson形式で取得
+                    // return response.json();
+                })
+                .then(data => {
+                    // answerText.innerHTML = data.answer;
+
+                })
+                .finally(() => {
+
+                    // 回答完了をログに残す
+                    console.log("request complete!")
+                });
+            });
+            
+
     </script>
 
 <div class="-wrapper">
@@ -183,7 +181,6 @@ form.addEventListener("submit", event => {
         </p>
 
         <script>
-
             // 「いいね」ボタンのelementを取得
             document.getElementById("like-button-{{ answer_log_data['id'] }}").
                 addEventListener("click", ev => {

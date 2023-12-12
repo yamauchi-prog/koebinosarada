@@ -148,10 +148,7 @@ def dbselect():
         answer_log_data_list.append(append_data)
     print(answer_log_data_list)
     # テンプレートに取得データのJsonリストを渡す
-    return render_template(
-        'question_dblog.html',
-        answer_log_data_list=answer_log_data_list
-    )
+    return jsonify(answer_log_data_list)
 
 #★★★↓追加↓★★★（山内が見たらこのコメントは消して良し）
 # 「いいね」をカウントアップするルーティング
