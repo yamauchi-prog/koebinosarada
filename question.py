@@ -4,6 +4,8 @@ import datetime
 import firebase_admin
 from firebase_admin import credentials, firestore, initialize_app
 import pendulum
+import pytz
+
 
 # firebaseへの接続準備
 cred = credentials.Certificate('./hacku-adminsdk.json')
@@ -90,16 +92,22 @@ def dblogpage():
         # 取得したデータの改行コードをHTMLの改行に変換
         question = doc_dict['question'].replace('\n', '<br>')
         
+        # 日本時間に変換
+        date_jp = doc_dict['date'].astimezone(pytz.timezone('Asia/Tokyo'))
+        formatted_date = date_jp.strftime('%Y/%m/%d %H:%M:%S')
+
+
         # 取得してきたデータをJsonのリストに変換
         append_data = {
             'id': doc_dict['id'],
             'faculty': doc_dict['faculty'],
             'question': question,
-            'date': doc_dict['date'].strftime('%Y/%m/%d %H:%M:%S'),
+            'date': formatted_date,
             'like': doc_dict['like']
         }
         answer_log_data_list.append(append_data)
         print(answer_log_data_list)
+        
 
     # テンプレートに取得データのJsonリストを渡す
     return render_template(
@@ -136,13 +144,17 @@ def dbselect():
 
         # 取得したデータの改行コードをHTMLの改行に変換
         question = doc_dict['question'].replace('\n', '<br>')
-        
+
+            # 日本時間に変換
+        date_jp = doc_dict['date'].astimezone(pytz.timezone('Asia/Tokyo'))
+        formatted_date = date_jp.strftime('%Y/%m/%d %H:%M:%S')
+    
         # 取得してきたデータをJsonのリストに変換
         append_data = {
             'id': doc_dict['id'],
             'faculty': doc_dict['faculty'],
             'question': question,
-            'date': doc_dict['date'].strftime('%Y/%m/%d %H:%M:%S'),
+            'date': formatted_date,
             'like': doc_dict['like']
         }
         answer_log_data_list.append(append_data)
@@ -196,12 +208,16 @@ def zdlogpage():
         # 取得したデータの改行コードをHTMLの改行に変換
         question = doc_dict['question'].replace('\n', '<br>')
         
+        # 日本時間に変換
+        date_jp = doc_dict['date'].astimezone(pytz.timezone('Asia/Tokyo'))
+        formatted_date = date_jp.strftime('%Y/%m/%d %H:%M:%S')
+
         # 取得してきたデータをJsonのリストに変換
         append_data = {
             'id': doc_dict['id'],
             'faculty': doc_dict['faculty'],
             'question': question,
-            'date': doc_dict['date'].strftime('%Y/%m/%d %H:%M:%S'),
+            'date': formatted_date,
             'like': doc_dict['like']
         }
         zatudan_log_data_list.append(append_data)
@@ -296,12 +312,16 @@ def answerpage():
         # 取得したデータの改行コードをHTMLの改行に変換
         answer = doc_dict['answer'].replace('\n', '<br>')
         
+        # 日本時間に変換
+        date_jp = doc_dict['date'].astimezone(pytz.timezone('Asia/Tokyo'))
+        formatted_date = date_jp.strftime('%Y/%m/%d %H:%M:%S')
+
         # 取得してきたデータをJsonのリストに変換
         append_data = {#どのidの質問に答えたかも記録する
             'id': doc_dict['id'],
             'faculty': doc_dict['faculty'],
             'answer': answer,
-            'date': doc_dict['date'].strftime('%Y/%m/%d %H:%M:%S'),
+            'date': formatted_date,
             'like': doc_dict['like']
         }
         response_log_data_list.append(append_data)
@@ -343,12 +363,16 @@ def choice():
         # 取得したデータの改行コードをHTMLの改行に変換
         response = doc_dict['response'].replace('\n', '<br>')
         
+        # 日本時間に変換
+        date_jp = doc_dict['date'].astimezone(pytz.timezone('Asia/Tokyo'))
+        formatted_date = date_jp.strftime('%Y/%m/%d %H:%M:%S')
+
         # 取得してきたデータをJsonのリストに変換
         append_data = {
             'id': doc_dict['id'],
             'faculty': doc_dict['faculty'],
             'response': response,
-            'date': doc_dict['date'].strftime('%Y/%m/%d %H:%M:%S'),
+            'date': formatted_date,
             'like': doc_dict['like']
         }
         response_log_data_list.append(append_data)
