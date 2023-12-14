@@ -156,6 +156,7 @@ def dbselect():
         # 取得してきたデータをJsonのリストに変換
         append_data = {
             'id': doc_dict['id'],
+            'icon': doc_dict['icon'],
             'faculty': doc_dict['faculty'],
             'question': question,
             'date': formatted_date,
@@ -174,10 +175,12 @@ def submitZatudan():
             request_data = request.json
             faculty = request_data.get('faculty')
             question_sentence = request_data.get('question_sentence')
+            icon = request_data.get('icon')
             ref = db.collection('zatudan_log')
             new_doc = ref.document()
             new_doc.set({
                 'id': new_doc.id,
+                'icon': icon,
                 'faculty': faculty,
                 'question': question_sentence,
                 'date': datetime.datetime.now(pendulum.timezone('Asia/Tokyo')),
@@ -219,6 +222,7 @@ def zdlogpage():
         # 取得してきたデータをJsonのリストに変換
         append_data = {
             'id': doc_dict['id'],
+            'icon': doc_dict['icon'],
             'faculty': doc_dict['faculty'],
             'question': question,
             'date': formatted_date,
@@ -268,10 +272,12 @@ def submitAnswer():
             request_data = request.json
             faculty = request_data.get('faculty')
             answer_sentence = request_data.get('answer_sentence')
+            icon = request_data.get('icon')
             ref = db.collection('response_log')
             new_doc = ref.document()
             new_doc.set({#どのidの質問に答えたかも記録する
                 'id': new_doc.id,
+                'icon': icon,
                 'faculty': faculty,
                 'answer': answer_sentence,
                 'date': datetime.datetime.now(pendulum.timezone('Asia/Tokyo')),
@@ -323,6 +329,7 @@ def answerpage():
         # 取得してきたデータをJsonのリストに変換
         append_data = {#どのidの質問に答えたかも記録する
             'id': doc_dict['id'],
+            'icon': doc_dict['icon'],
             'faculty': doc_dict['faculty'],
             'answer': answer,
             'date': formatted_date,
@@ -374,6 +381,7 @@ def choice():
         # 取得してきたデータをJsonのリストに変換
         append_data = {
             'id': doc_dict['id'],
+            'icon': doc_dict['icon'],
             'faculty': doc_dict['faculty'],
             'response': response,
             'date': formatted_date,
