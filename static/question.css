@@ -20,14 +20,11 @@ h2{
 #submit_button {
     color:#000000;
     background-color:#43C660;
-<<<<<<< HEAD
     right:30px;
     border-radius: 10px; 
     padding: 8px 16px; 
     border: none; 
     outline: none; 
-}
-=======
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
@@ -55,4 +52,4 @@ h2{
 .form-textarea {
     border-radius: 5px; /* 丸みの強さを指定 */
 }
->>>>>>> 4d5f67197e8f043bc70fc0da5b4f09548c98a67b
+
