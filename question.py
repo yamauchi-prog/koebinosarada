@@ -149,7 +149,7 @@ def dbselect():
         # 取得したデータの改行コードをHTMLの改行に変換
         question = doc_dict['question'].replace('\n', '<br>')
 
-            # 日本時間に変換
+        # 日本時間に変換
         date_jp = doc_dict['date'].astimezone(pytz.timezone('Asia/Tokyo'))
         formatted_date = date_jp.strftime('%Y/%m/%d %H:%M:%S')
     
