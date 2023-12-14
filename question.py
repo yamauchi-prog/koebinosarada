@@ -38,12 +38,6 @@ def zatudan():
 def iconimage():
         return send_file('../static/icon/image1.png', mimetype='static/icon/image1.png')
 
-# 返信
-@app.route("/response", methods=['GET'])
-def response():
-        return render_template('question_answer.html')
-
-
 
 # 質問を受けつけるルーティング
 @app.route('/answer', methods=['POST', 'OPTIONS'])
@@ -107,7 +101,7 @@ def dblogpage():
             'like': doc_dict['like']
         }
         question_log_data_list.append(append_data)
-        print(question_log_data_list)
+        # print(question_log_data_list)
         
         
 
@@ -211,7 +205,7 @@ def dbpro():
 
 
 # 雑談を受けつけるルーティング
-@app.route('/zatudan', methods=['POST', 'OPTIONS'])
+@app.route('/submitZatudan', methods=['POST', 'OPTIONS'])
 def submitZatudan():
     if request.method == 'POST':
         try:
@@ -315,17 +309,19 @@ def postlike():
 # ↓　山内変更　↓
 # 回答を受けつけるルーティング
 @app.route('/response', methods=['POST', 'OPTIONS'])
-def submitAnswer():
+def response():
     if request.method == 'POST':
         try:
             request_data = request.json
             faculty = request_data.get('faculty')
             answer_sentence = request_data.get('answer_sentence')
             icon = request_data.get('icon')
+            reid = request_data.get('reid')
             ref = db.collection('response_log')
             new_doc = ref.document()
             new_doc.set({#どのidの質問に答えたかも記録する
                 'id': new_doc.id,
+                'reid': reid,
                 'icon': icon,
                 'faculty': faculty,
                 'answer': answer_sentence,
@@ -342,12 +338,17 @@ def submitAnswer():
 
 
 # 過去の返信を取得するルーティング
-@app.route('/answerpage', methods=['GET', 'POST'])
+@app.route('/answerpage', methods=['GET','POST'])
 def answerpage():
+    print('バックエンド')
     db = firestore.client()
+    # 「いいね」の対象となる質問のIDを取得
+    promptJson = request.json
+    question_log_id = promptJson['reid']
 
-    # Firestoreから並び替えたデータを取得する準備
+    # 質問IDに一致する質問をFirestoreから取得
     ref = db.collection('response_log')
+    docs = ref.where('reid', '==', question_log_id).stream()
 
     ref = ref.order_by('date', direction=firestore.Query.DESCENDING)
 
@@ -368,6 +369,7 @@ def answerpage():
         # 取得してきたデータをJsonのリストに変換
         append_data = {#どのidの質問に答えたかも記録する
             'id': doc_dict['id'],
+            'reid': doc_dict['reid'],
             'icon': doc_dict['icon'],
             'faculty': doc_dict['faculty'],
             'answer': answer,
@@ -382,6 +384,29 @@ def answerpage():
         'question_answer.html',
         response_log_data_list=response_log_data_list
     )
+
+# 返信の「いいね」をカウントアップするルーティング
+@app.route('/res_good', methods=['POST'])
+def res_good():
+    # 「いいね」の対象となる質問のIDを取得
+    promptJson = request.json
+    zatudan_log_id = promptJson['id']
+
+    # 雑談IDに一致する質問をFirestoreから取得
+    ref = db.collection('zatudan_log')
+    docs = ref.where('id', '==', zatudan_log_id).stream()
+    
+    # 更新前のデータを取得する。（forだが1回しか処理が実行されない）
+    for doc in docs:
+        doc_dict = doc.to_dict()
+        doc_like = doc_dict['like1']
+
+    # 取得した回答の「いいね」をカウントアップ
+    ref.document(zatudan_log_id).update({'like1': doc_like+1})
+
+    # カウントアップ後の「いいね」の値をフロントエンドに渡す
+    return {'result':doc_like+1}
+
 
 # 過去の返信を取得するルーティング(NEW)
 @app.route('/anchoice', methods=['POST', 'OPTIONS'])
