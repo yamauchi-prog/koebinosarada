@@ -162,12 +162,12 @@
         </div>
 
     </form>
-    <!-- <div id="answer_text"></div> -->
+    <div id="answer_text"></div>
 
     <script>
             const button = document.getElementById("select_button");
             const form = document.getElementById("select-content");
-            // const answerText = document.getElementById("answer_text");
+            const answerText = document.getElementById("answer_text");
 
 
             form.addEventListener("submit", event => {
@@ -189,10 +189,10 @@
                 })
                 .then(response => {
                     // 回答データをjson形式で取得
-                    // return response.json();
+                    return response.json();
                 })
                 .then(data => {
-                    // answerText.innerHTML = data.answer;
+                    answerText.innerHTML = data.answer;
 
                 })
                 .finally(() => {
