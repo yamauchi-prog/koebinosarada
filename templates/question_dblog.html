@@ -175,7 +175,7 @@
                         </td><!--↑♡ボタン↑-->
                         <footer class="an-footer">
                             <td colspan="2">
-                                <button style="float: right; margin-right: 5%;"><a href="{{ url_for('response') }}">返信</a></button></td><!--返信ボタン-->
+                                <button id="res_req" style="float: right; margin-right: 5%;">返信</button></td><!--返信ボタン-->
                         </footer>
                     </tr>
                 </tbody>
@@ -183,6 +183,25 @@
         </p>
 
         <script>
+            // 「返信」ボタンのelementを取得 
+            document.getElementById("res_req").
+                addEventListener("click", ev => {
+
+                    // バックエンドに「いいね」のカウントアップをリクエスト
+                    fetch("answerpage", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json; charset=utf-8" },
+                        body: JSON.stringify({ "reid": "{{ question_log_data['id'] }}" })
+                    })
+                        .then(response => {
+                            return response.json();
+                        })
+                        .then(data => {
+                            answerText.innerHTML = data.answer;
+                        }).finally(() => {
+                            console.log("request complete!");
+                        });
+                });
 
 
             // 「いいね」ボタンのelementを取得 
