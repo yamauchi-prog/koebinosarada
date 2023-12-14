@@ -33,10 +33,7 @@ def inquiry():
 def zatudan():
         return render_template('zatudan.html')
 
-# プロフィール
-@app.route("/profile", methods=['GET'])
-def profile():
-        return render_template('profile.html')
+#画像の指定
 @app.route('/iconimage')
 def iconimage():
         return send_file('../static/icon/image1.png', mimetype='static/icon/image1.png')
@@ -167,6 +164,51 @@ def dbselect():
     print(question_log_data_list)
     # テンプレートに取得データのJsonリストを渡す
     return jsonify(question_log_data_list)
+
+# 過去の質問TOP5を取得するルーティング
+@app.route('/dbpro', methods=['GET', 'POST'])
+def dbpro():
+    db = firestore.client()
+
+    # Firestoreから並び替えたデータを取得する準備
+    ref = db.collection('question_log')#question_logに変更する
+
+    ref = ref.order_by('like', direction=firestore.Query.DESCENDING)
+    
+    docs = ref.stream()
+    # Firestoreからデータを取得
+    question_log_data_list = []
+    for doc in docs:
+        # 取得したデータをpythonで取り扱えるように変換
+        doc_dict = doc.to_dict()
+        print(doc_dict)
+        # 取得したデータの改行コードをHTMLの改行に変換
+        question = doc_dict['question'].replace('\n', '<br>')
+        
+        # 日本時間に変換
+        date_jp = doc_dict['date'].astimezone(pytz.timezone('Asia/Tokyo'))
+        formatted_date = date_jp.strftime('%Y/%m/%d %H:%M:%S')
+
+
+        # 取得してきたデータをJsonのリストに変換
+        append_data = {
+            'id': doc_dict['id'],
+            'icon': doc_dict['icon'],
+            'faculty': doc_dict['faculty'],
+            'question': question,
+            'date': formatted_date,
+            'like': doc_dict['like']
+        }
+        question_log_data_list.append(append_data)
+        print(question_log_data_list)
+        
+
+    # テンプレートに取得データのJsonリストを渡す
+    return render_template(
+        'profile.html',
+        question_log_data_list=question_log_data_list
+    )
+
 
 # 雑談を受けつけるルーティング
 @app.route('/zatudan', methods=['POST', 'OPTIONS'])
