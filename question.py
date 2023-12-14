@@ -390,19 +390,19 @@ def answerpage():
 def res_good():
     # 「いいね」の対象となる質問のIDを取得
     promptJson = request.json
-    zatudan_log_id = promptJson['id']
+    response_log_id = promptJson['id']
 
     # 雑談IDに一致する質問をFirestoreから取得
-    ref = db.collection('zatudan_log')
-    docs = ref.where('id', '==', zatudan_log_id).stream()
+    ref = db.collection('response_log')
+    docs = ref.where('id', '==', response_log_id).stream()
     
     # 更新前のデータを取得する。（forだが1回しか処理が実行されない）
     for doc in docs:
         doc_dict = doc.to_dict()
-        doc_like = doc_dict['like1']
+        doc_like = doc_dict['like']
 
     # 取得した回答の「いいね」をカウントアップ
-    ref.document(zatudan_log_id).update({'like1': doc_like+1})
+    ref.document(response_log_id).update({'like': doc_like+1})
 
     # カウントアップ後の「いいね」の値をフロントエンドに渡す
     return {'result':doc_like+1}
