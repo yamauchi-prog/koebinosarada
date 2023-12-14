@@ -16,6 +16,7 @@ db = firestore.client()
 app = Flask(__name__,static_folder='./static/icon')
 CORS(app)
 app.config['JSON_AS_ASCII'] = False
+app.logger.error('ERROR')
 
 # ホームページ
 @app.route("/")
@@ -184,7 +185,10 @@ def submitZatudan():
                 'faculty': faculty,
                 'question': question_sentence,
                 'date': datetime.datetime.now(pendulum.timezone('Asia/Tokyo')),
-                'like': 0
+                'like1': 0,
+                'like2': 0,
+                'like3': 0,
+                'like4': 0
             })
 
         # フロントエンドへ結果を渡す
@@ -226,7 +230,10 @@ def zdlogpage():
             'faculty': doc_dict['faculty'],
             'question': question,
             'date': formatted_date,
-            'like': doc_dict['like']
+            'like1': doc_dict['like1'],
+            'like2': doc_dict['like2'],
+            'like3': doc_dict['like3'],
+            'like4': doc_dict['like4']
         }
         zatudan_log_data_list.append(append_data)
         print(zatudan_log_data_list)
@@ -239,7 +246,7 @@ def zdlogpage():
 
 
 #★★★↓追加↓★★★（山内が見たらこのコメントは消して良し）
-# 「いいね」をカウントアップするルーティング
+# 質問の「いいね」をカウントアップするルーティング
 @app.route('/postlike', methods=['POST'])
 def postlike():
     # 「いいね」の対象となる質問のIDを取得
@@ -394,6 +401,95 @@ def choice():
         'question_answer.html',
         response_log_data_list=response_log_data_list
     )
+
+# 雑談の「いいね1」をカウントアップするルーティング
+@app.route('/zatulike1', methods=['POST'])
+def zatulike1():
+    # 「いいね」の対象となる質問のIDを取得
+    promptJson = request.json
+    zatudan_log_id = promptJson['id']
+
+    # 雑談IDに一致する質問をFirestoreから取得
+    ref = db.collection('zatudan_log')
+    docs = ref.where('id', '==', zatudan_log_id).stream()
+    
+    # 更新前のデータを取得する。（forだが1回しか処理が実行されない）
+    for doc in docs:
+        doc_dict = doc.to_dict()
+        doc_like = doc_dict['like1']
+
+    # 取得した回答の「いいね」をカウントアップ
+    ref.document(zatudan_log_id).update({'like1': doc_like+1})
+
+    # カウントアップ後の「いいね」の値をフロントエンドに渡す
+    return {'result':doc_like+1}
+
+# 雑談の「いいね2」をカウントアップするルーティング
+@app.route('/zatulike2', methods=['POST'])
+def zatulike2():
+    # 「いいね」の対象となる質問のIDを取得
+    promptJson = request.json
+    zatudan_log_id = promptJson['id']
+
+    # 雑談IDに一致する質問をFirestoreから取得
+    ref = db.collection('zatudan_log')
+    docs = ref.where('id', '==', zatudan_log_id).stream()
+    
+    # 更新前のデータを取得する。（forだが1回しか処理が実行されない）
+    for doc in docs:
+        doc_dict = doc.to_dict()
+        doc_like = doc_dict['like2']
+
+    # 取得した回答の「いいね」をカウントアップ
+    ref.document(zatudan_log_id).update({'like2': doc_like+1})
+
+    # カウントアップ後の「いいね」の値をフロントエンドに渡す
+    return {'result':doc_like+1}
+
+# 雑談の「いいね3」をカウントアップするルーティング
+@app.route('/zatulike3', methods=['POST'])
+def zatulike3():
+    # 「いいね」の対象となる質問のIDを取得
+    promptJson = request.json
+    zatudan_log_id = promptJson['id']
+
+    # 雑談IDに一致する質問をFirestoreから取得
+    ref = db.collection('zatudan_log')
+    docs = ref.where('id', '==', zatudan_log_id).stream()
+    
+    # 更新前のデータを取得する。（forだが1回しか処理が実行されない）
+    for doc in docs:
+        doc_dict = doc.to_dict()
+        doc_like = doc_dict['like3']
+
+    # 取得した回答の「いいね」をカウントアップ
+    ref.document(zatudan_log_id).update({'like3': doc_like+1})
+
+    # カウントアップ後の「いいね」の値をフロントエンドに渡す
+    return {'result':doc_like+1}
+
+
+# 雑談の「いいね4」をカウントアップするルーティング
+@app.route('/zatulike4', methods=['POST'])
+def zatulike4():
+    # 「いいね」の対象となる質問のIDを取得
+    promptJson = request.json
+    zatudan_log_id = promptJson['id']
+
+    # 雑談IDに一致する質問をFirestoreから取得
+    ref = db.collection('zatudan_log')
+    docs = ref.where('id', '==', zatudan_log_id).stream()
+    
+    # 更新前のデータを取得する。（forだが1回しか処理が実行されない）
+    for doc in docs:
+        doc_dict = doc.to_dict()
+        doc_like = doc_dict['like4']
+
+    # 取得した回答の「いいね」をカウントアップ
+    ref.document(zatudan_log_id).update({'like4': doc_like+1})
+
+    # カウントアップ後の「いいね」の値をフロントエンドに渡す
+    return {'result':doc_like+1}
 
 #Flask起動
 if __name__ == '__main__':
