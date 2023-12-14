@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>学部選択</title>
+      </head>
+      <body>
+      
+        <label for="faculties">学部を選択してください:</label>
+        <select id="faculties">
+          <option value="engineering">情報工学部情報工学科</option>
+          <option value="science">都市情報学部都市情報学科</option>
+        </select>
+      
+        <button onclick="redirectToSelectedFaculty()">選択した学部のページに移動</button>
+      
+        <script>
+          // 選択されている学部を取得する関数
+          function getSelectedFaculty() {
+            const selectElement = document.getElementById('faculties');
+            const selectedFaculty = selectElement.value;
+            return selectedFaculty;
+          }
+      
+          // 選択した学部に応じてページ遷移を行う関数
+          function redirectToSelectedFaculty() {
+            const selectedFaculty = getSelectedFaculty();
+      
+            // AJAXリクエストやフォーム送信などを使って、バックエンドに情報を送信する
+            // ここで、選択された学部をバックエンドに送信する例を示します
+            fetch('/backend/redirect', {
+              method: 'POST',
+              body: JSON.stringify({ faculty: selectedFaculty }),
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            })
+            .then(response => {
+              if (response.ok) {
+                return response.json();
+              }
+              throw new Error('Network response was not ok.');
+            })
+            .then(data => {
+              // バックエンドからの応答を処理する
+              window.location.href = data.redirectURL; // バックエンドからのリダイレクト先のURL
+            })
+            .catch(error => {
+              console.error('There has been a problem with your fetch operation:', error);
+            });
+          }
+        </script>
+      
+      </body>
+      </html>
