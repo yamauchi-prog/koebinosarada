@@ -297,6 +297,19 @@ def submitAnswer():
         except Exception as e:
             print(f"Error processing request: {e}")
             return jsonify({'error': 'Internal server error'}), 500
+            
+    # 「いいね（返信）」の対象となる質問のIDを取得
+    promptJson = request.json
+    answer_log_id = promptJson['id']
+
+    # 質問IDに一致する質問をFirestoreから取得
+    ref = db.collection('response_log')
+    docs = ref.where('id', '==', answer_log_id).stream()
+
+    # 更新前のデータを取得する。（forだが1回しか処理が実行されない）
+    for doc in docs:
+        doc_dict = doc.to_dict()
+        doc_question = doc_question['question']
 
 
 # 過去の返信を取得するルーティング
@@ -308,16 +321,6 @@ def answerpage():
     ref = db.collection('response_log')
 
     ref = ref.order_by('date', direction=firestore.Query.DESCENDING)
-    
-
-
-    # if request.method == 'POST':
-    #     request_data = request.json
-    #     print(request.json)
-    #     faculty_r = request_data.get('faculty_r')
-    #     print(faculty_r)
-    #     ref = ref.where('faculty', '==', faculty_r)
-    #     print('データを受信しました')
 
     docs = ref.stream()
     # Firestoreからデータを取得
