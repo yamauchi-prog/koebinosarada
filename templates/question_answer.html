@@ -51,6 +51,9 @@ event.preventDefault();
 // ★formから選択された人物とテキストを取得
 const faculty = form.faculty.value;
 const answer_sentence = form.answer_sentence.value;
+// sessionStorage に保存したデータを取得
+const icon = sessionStorage.getItem("icon");
+
 
 // ★回答フォームに文字列を書き込み
 answerText.innerHTML = `${faculty}での質問：「${answer_sentence}」`;
@@ -58,7 +61,8 @@ answerText.innerHTML = `${faculty}での質問：「${answer_sentence}」`;
 // ★質問時の情報をJSONに変換する。
 const postData = {
     "faculty": faculty,
-    "answer_sentence": answer_sentence
+    "answer_sentence": answer_sentence,
+    "icon": icon
 };
 
 // バックエンドに対して回答データをリクエスト
