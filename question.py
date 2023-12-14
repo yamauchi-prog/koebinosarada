@@ -16,7 +16,6 @@ db = firestore.client()
 app = Flask(__name__,static_folder='./static/icon')
 CORS(app)
 app.config['JSON_AS_ASCII'] = False
-app.logger.error('ERROR')
 
 # ホームページ
 @app.route("/")
@@ -56,12 +55,10 @@ def submitQuestion():
             request_data = request.json
             faculty = request_data.get('faculty')
             question_sentence = request_data.get('question_sentence')
-            icon = request_data.get('icon')
-            ref = db.collection('question_log')#question_logに変更する
+            ref = db.collection('answer_log')#question_logに変更する
             new_doc = ref.document()
             new_doc.set({
                 'id': new_doc.id,
-                'icon': icon,
                 'faculty': faculty,
                 'question': question_sentence,
                 'date': datetime.datetime.now(pendulum.timezone('Asia/Tokyo')),
@@ -81,13 +78,13 @@ def dblogpage():
     db = firestore.client()
 
     # Firestoreから並び替えたデータを取得する準備
-    ref = db.collection('question_log')#question_logに変更する
+    ref = db.collection('answer_log')#question_logに変更する
 
     ref = ref.order_by('date', direction=firestore.Query.DESCENDING)
     
     docs = ref.stream()
     # Firestoreからデータを取得
-    question_log_data_list = []
+    answer_log_data_list = []
     for doc in docs:
         # 取得したデータをpythonで取り扱えるように変換
         doc_dict = doc.to_dict()
@@ -103,21 +100,19 @@ def dblogpage():
         # 取得してきたデータをJsonのリストに変換
         append_data = {
             'id': doc_dict['id'],
-            'icon': doc_dict['icon'],
             'faculty': doc_dict['faculty'],
             'question': question,
             'date': formatted_date,
             'like': doc_dict['like']
         }
-        question_log_data_list.append(append_data)
-        print(question_log_data_list)
-        
+        answer_log_data_list.append(append_data)
+        print(answer_log_data_list)
         
 
     # テンプレートに取得データのJsonリストを渡す
     return render_template(
         'question_dblog.html',
-        question_log_data_list=question_log_data_list
+        answer_log_data_list=answer_log_data_list
     )
 
 # 過去の質問を選別して取得するルーティング(NEW)
@@ -126,7 +121,7 @@ def dbselect():
     db = firestore.client()
 
     # Firestoreから並び替えたデータを取得する準備
-    ref = db.collection('question_log')#question_logに変更する
+    ref = db.collection('answer_log')#question_logに変更する
 
     ref = ref.order_by('date', direction=firestore.Query.DESCENDING)
     
@@ -142,7 +137,7 @@ def dbselect():
 
     docs = ref.stream()
     # Firestoreからデータを取得
-    question_log_data_list = []
+    answer_log_data_list = []
     for doc in docs:
         # 取得したデータをpythonで取り扱えるように変換
         doc_dict = doc.to_dict()
@@ -150,23 +145,22 @@ def dbselect():
         # 取得したデータの改行コードをHTMLの改行に変換
         question = doc_dict['question'].replace('\n', '<br>')
 
-        # 日本時間に変換
+            # 日本時間に変換
         date_jp = doc_dict['date'].astimezone(pytz.timezone('Asia/Tokyo'))
         formatted_date = date_jp.strftime('%Y/%m/%d %H:%M:%S')
     
         # 取得してきたデータをJsonのリストに変換
         append_data = {
             'id': doc_dict['id'],
-            'icon': doc_dict['icon'],
             'faculty': doc_dict['faculty'],
             'question': question,
             'date': formatted_date,
             'like': doc_dict['like']
         }
-        question_log_data_list.append(append_data)
-    print(question_log_data_list)
+        answer_log_data_list.append(append_data)
+    print(answer_log_data_list)
     # テンプレートに取得データのJsonリストを渡す
-    return jsonify(question_log_data_list)
+    return jsonify(answer_log_data_list)
 
 # 雑談を受けつけるルーティング
 @app.route('/zatudan', methods=['POST', 'OPTIONS'])
@@ -176,19 +170,14 @@ def submitZatudan():
             request_data = request.json
             faculty = request_data.get('faculty')
             question_sentence = request_data.get('question_sentence')
-            icon = request_data.get('icon')
             ref = db.collection('zatudan_log')
             new_doc = ref.document()
             new_doc.set({
                 'id': new_doc.id,
-                'icon': icon,
                 'faculty': faculty,
                 'question': question_sentence,
                 'date': datetime.datetime.now(pendulum.timezone('Asia/Tokyo')),
-                'like1': 0,
-                'like2': 0,
-                'like3': 0,
-                'like4': 0
+                'like': 0
             })
 
         # フロントエンドへ結果を渡す
@@ -226,14 +215,10 @@ def zdlogpage():
         # 取得してきたデータをJsonのリストに変換
         append_data = {
             'id': doc_dict['id'],
-            'icon': doc_dict['icon'],
             'faculty': doc_dict['faculty'],
             'question': question,
             'date': formatted_date,
-            'like1': doc_dict['like1'],
-            'like2': doc_dict['like2'],
-            'like3': doc_dict['like3'],
-            'like4': doc_dict['like4']
+            'like': doc_dict['like']
         }
         zatudan_log_data_list.append(append_data)
         print(zatudan_log_data_list)
@@ -246,16 +231,16 @@ def zdlogpage():
 
 
 #★★★↓追加↓★★★（山内が見たらこのコメントは消して良し）
-# 質問の「いいね」をカウントアップするルーティング
+# 「いいね」をカウントアップするルーティング
 @app.route('/postlike', methods=['POST'])
 def postlike():
     # 「いいね」の対象となる質問のIDを取得
     promptJson = request.json
-    question_log_id = promptJson['id']
+    answer_log_id = promptJson['id']
 
     # 質問IDに一致する質問をFirestoreから取得
-    ref = db.collection('question_log')#question_logに変更する
-    docs = ref.where('id', '==', question_log_id).stream()
+    ref = db.collection('answer_log')#question_logに変更する
+    docs = ref.where('id', '==', answer_log_id).stream()
     
     # 更新前のデータを取得する。（forだが1回しか処理が実行されない）
     for doc in docs:
@@ -263,7 +248,7 @@ def postlike():
         doc_like = doc_dict['like']
 
     # 取得した回答の「いいね」をカウントアップ
-    ref.document(question_log_id).update({'like': doc_like+1})
+    ref.document(answer_log_id).update({'like': doc_like+1})
 
     # カウントアップ後の「いいね」の値をフロントエンドに渡す
     return {'result':doc_like+1}
@@ -279,16 +264,15 @@ def submitAnswer():
             request_data = request.json
             faculty = request_data.get('faculty')
             answer_sentence = request_data.get('answer_sentence')
-            icon = request_data.get('icon')
+            response_sentence = request_data.get('response_sentence')
             ref = db.collection('response_log')
             new_doc = ref.document()
             new_doc.set({#どのidの質問に答えたかも記録する
                 'id': new_doc.id,
-                'icon': icon,
                 'faculty': faculty,
                 'answer': answer_sentence,
+                'response':response_sentence,
                 'date': datetime.datetime.now(pendulum.timezone('Asia/Tokyo')),
-                'like': 0
             })
 
         # フロントエンドへ結果を渡す
@@ -297,6 +281,18 @@ def submitAnswer():
         except Exception as e:
             print(f"Error processing request: {e}")
             return jsonify({'error': 'Internal server error'}), 500
+    # 「いいね（返信）」の対象となる質問のIDを取得
+    promptJson = request.json
+    answer_log_id = promptJson['id']
+
+    # 質問IDに一致する質問をFirestoreから取得
+    ref = db.collection('response_log')#question_logに変更する
+    docs = ref.where('id', '==', answer_log_id).stream()
+    
+    # 更新前のデータを取得する。（forだが1回しか処理が実行されない）
+    for doc in docs:
+        doc_dict = doc.to_dict()
+        doc_question = doc_question['question']
 
 
 # 過去の返信を取得するルーティング
@@ -328,6 +324,7 @@ def answerpage():
 
         # 取得したデータの改行コードをHTMLの改行に変換
         answer = doc_dict['answer'].replace('\n', '<br>')
+        response = doc_dict['response'].replace('\n', '<br>')
         
         # 日本時間に変換
         date_jp = doc_dict['date'].astimezone(pytz.timezone('Asia/Tokyo'))
@@ -336,11 +333,10 @@ def answerpage():
         # 取得してきたデータをJsonのリストに変換
         append_data = {#どのidの質問に答えたかも記録する
             'id': doc_dict['id'],
-            'icon': doc_dict['icon'],
             'faculty': doc_dict['faculty'],
             'answer': answer,
+            'response':response,
             'date': formatted_date,
-            'like': doc_dict['like']
         }
         response_log_data_list.append(append_data)
         print(response_log_data_list)
@@ -388,11 +384,9 @@ def choice():
         # 取得してきたデータをJsonのリストに変換
         append_data = {
             'id': doc_dict['id'],
-            'icon': doc_dict['icon'],
             'faculty': doc_dict['faculty'],
             'response': response,
             'date': formatted_date,
-            'like': doc_dict['like']
         }
         response_log_data_list.append(append_data)
     print(response_log_data_list)
@@ -401,95 +395,6 @@ def choice():
         'question_answer.html',
         response_log_data_list=response_log_data_list
     )
-
-# 雑談の「いいね1」をカウントアップするルーティング
-@app.route('/zatulike1', methods=['POST'])
-def zatulike1():
-    # 「いいね」の対象となる質問のIDを取得
-    promptJson = request.json
-    zatudan_log_id = promptJson['id']
-
-    # 雑談IDに一致する質問をFirestoreから取得
-    ref = db.collection('zatudan_log')
-    docs = ref.where('id', '==', zatudan_log_id).stream()
-    
-    # 更新前のデータを取得する。（forだが1回しか処理が実行されない）
-    for doc in docs:
-        doc_dict = doc.to_dict()
-        doc_like = doc_dict['like1']
-
-    # 取得した回答の「いいね」をカウントアップ
-    ref.document(zatudan_log_id).update({'like1': doc_like+1})
-
-    # カウントアップ後の「いいね」の値をフロントエンドに渡す
-    return {'result':doc_like+1}
-
-# 雑談の「いいね2」をカウントアップするルーティング
-@app.route('/zatulike2', methods=['POST'])
-def zatulike2():
-    # 「いいね」の対象となる質問のIDを取得
-    promptJson = request.json
-    zatudan_log_id = promptJson['id']
-
-    # 雑談IDに一致する質問をFirestoreから取得
-    ref = db.collection('zatudan_log')
-    docs = ref.where('id', '==', zatudan_log_id).stream()
-    
-    # 更新前のデータを取得する。（forだが1回しか処理が実行されない）
-    for doc in docs:
-        doc_dict = doc.to_dict()
-        doc_like = doc_dict['like2']
-
-    # 取得した回答の「いいね」をカウントアップ
-    ref.document(zatudan_log_id).update({'like2': doc_like+1})
-
-    # カウントアップ後の「いいね」の値をフロントエンドに渡す
-    return {'result':doc_like+1}
-
-# 雑談の「いいね3」をカウントアップするルーティング
-@app.route('/zatulike3', methods=['POST'])
-def zatulike3():
-    # 「いいね」の対象となる質問のIDを取得
-    promptJson = request.json
-    zatudan_log_id = promptJson['id']
-
-    # 雑談IDに一致する質問をFirestoreから取得
-    ref = db.collection('zatudan_log')
-    docs = ref.where('id', '==', zatudan_log_id).stream()
-    
-    # 更新前のデータを取得する。（forだが1回しか処理が実行されない）
-    for doc in docs:
-        doc_dict = doc.to_dict()
-        doc_like = doc_dict['like3']
-
-    # 取得した回答の「いいね」をカウントアップ
-    ref.document(zatudan_log_id).update({'like3': doc_like+1})
-
-    # カウントアップ後の「いいね」の値をフロントエンドに渡す
-    return {'result':doc_like+1}
-
-
-# 雑談の「いいね4」をカウントアップするルーティング
-@app.route('/zatulike4', methods=['POST'])
-def zatulike4():
-    # 「いいね」の対象となる質問のIDを取得
-    promptJson = request.json
-    zatudan_log_id = promptJson['id']
-
-    # 雑談IDに一致する質問をFirestoreから取得
-    ref = db.collection('zatudan_log')
-    docs = ref.where('id', '==', zatudan_log_id).stream()
-    
-    # 更新前のデータを取得する。（forだが1回しか処理が実行されない）
-    for doc in docs:
-        doc_dict = doc.to_dict()
-        doc_like = doc_dict['like4']
-
-    # 取得した回答の「いいね」をカウントアップ
-    ref.document(zatudan_log_id).update({'like4': doc_like+1})
-
-    # カウントアップ後の「いいね」の値をフロントエンドに渡す
-    return {'result':doc_like+1}
 
 #Flask起動
 if __name__ == '__main__':
