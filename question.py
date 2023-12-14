@@ -129,11 +129,11 @@ def dbselect():
 
     if request.method == 'POST':
         request_data = request.json
-        print(request.json)
         faculty_r = request_data.get('faculty_r')
         print(faculty_r)
         ref = ref.where('faculty', '==', faculty_r)
         print('データを受信しました')
+        print(ref)
 
     docs = ref.stream()
     # Firestoreからデータを取得

@@ -42,101 +42,6 @@
 </style>
 
 <style>
-    /* 最初のテーブルに背景色を適用 */
-    table:nth-of-type(1) {
-        background-color: #C1EFB9; /* 背景色を指定 */
-    }
-
-    /* 2番目のテーブルに背景色を適用 */
-    table:nth-of-type(2) {
-        background-color: #F2D5F3; /* 別の背景色を指定 */
-    }
-
-    /* 3番目のテーブルに背景色を適用 */
-    table:nth-of-type(3) {
-        background-color: #B9E8EE; /* 別の背景色を指定 */
-    }
-
-    /* 4番目のテーブルに背景色を適用 */
-    table:nth-of-type(4) {
-        background-color: #C1EFB9; /* 別の背景色を指定 */
-    }
-
-    /* 5番目のテーブルに背景色を適用 */
-    table:nth-of-type(5) {
-        background-color: #F2D5F3; /* 別の背景色を指定 */
-    }
-
-    /* 6番目のテーブルに背景色を適用 */
-    table:nth-of-type(6) {
-        background-color: #B9E8EE; /* 別の背景色を指定 */
-    }
-
-    /* 7番目のテーブルに背景色を適用 */
-    table:nth-of-type(7) {
-        background-color: #C1EFB9; /* 別の背景色を指定 */
-    }
-
-    /* 8番目のテーブルに背景色を適用 */
-    table:nth-of-type(8) {
-        background-color: #F2D5F3; /* 別の背景色を指定 */
-    }
-
-    /* 9番目のテーブルに背景色を適用 */
-    table:nth-of-type(9) {
-        background-color: #B9E8EE; /* 別の背景色を指定 */
-    }
-
-    /* 10番目のテーブルに背景色を適用 */
-    table:nth-of-type(10) {
-        background-color: #C1EFB9; /* 別の背景色を指定 */
-    }
-
-    /* 11番目のテーブルに背景色を適用 */
-    table:nth-of-type(11) {
-        background-color: #F2D5F3; /* 別の背景色を指定 */
-    }
-
-    /* 12番目のテーブルに背景色を適用 */
-    table:nth-of-type(12) {
-        background-color: #B9E8EE; /* 別の背景色を指定 */
-    }
-
-    /* 13番目のテーブルに背景色を適用 */
-    table:nth-of-type(13) {
-        background-color: #C1EFB9; /* 別の背景色を指定 */
-    }
-
-    /* 14番目のテーブルに背景色を適用 */
-    table:nth-of-type(14) {
-        background-color: #F2D5F3; /* 別の背景色を指定 */
-    }
-
-    /* 15番目のテーブルに背景色を適用 */
-    table:nth-of-type(15) {
-        background-color: #B9E8EE; /* 別の背景色を指定 */
-    }
-
-    /* 16番目のテーブルに背景色を適用 */
-    table:nth-of-type(16) {
-        background-color: #C1EFB9; /* 別の背景色を指定 */
-    }
-
-    /* 17番目のテーブルに背景色を適用 */
-    table:nth-of-type(17) {
-        background-color: #F2D5F3; /* 別の背景色を指定 */
-    }
-
-    /* 18番目のテーブルに背景色を適用 */
-    table:nth-of-type(18) {
-        background-color: #B9E8EE; /* 別の背景色を指定 */
-    }
-
-    /* 19番目のテーブルに背景色を適用 */
-    table:nth-of-type(19) {
-        background-color: #C1EFB9; /* 別の背景色を指定 */
-    }
-
     /* テーブル内の特定のセルに背景色を適用 */
     table td {
         padding: 5px; /* セルの余白を設定 */
@@ -149,7 +54,6 @@
     td, th {
         border: none; /* セルの境界線を削除 */
     }
-
 </style>
 
 
@@ -225,6 +129,11 @@
 <div class="-wrapper">
         {% for question_log_data in question_log_data_list %}
         <!-- テーブル形式で回答データを表示 -->
+        <script>
+            var colorArray = new Array("#C1EFB9","#B9E8EE","#F2D5F3");
+            var color = colorArray[Math.floor( Math.random() * colorArray.length)];
+            // colorに色の変数が入っている
+        </script>
         <p>
             <table border="1">
                 <tbody>
@@ -255,6 +164,8 @@
         </p>
 
         <script>
+
+
             // 「いいね」ボタンのelementを取得 
             document.getElementById("like-button-{{ question_log_data['id'] }}").
                 addEventListener("click", ev => {
