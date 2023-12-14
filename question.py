@@ -304,16 +304,6 @@ def answerpage():
     ref = db.collection('response_log')
 
     ref = ref.order_by('date', direction=firestore.Query.DESCENDING)
-    
-
-
-    # if request.method == 'POST':
-    #     request_data = request.json
-    #     print(request.json)
-    #     faculty_r = request_data.get('faculty_r')
-    #     print(faculty_r)
-    #     ref = ref.where('faculty', '==', faculty_r)
-    #     print('データを受信しました')
 
     docs = ref.stream()
     # Firestoreからデータを取得
