@@ -55,10 +55,12 @@ def submitQuestion():
             request_data = request.json
             faculty = request_data.get('faculty')
             question_sentence = request_data.get('question_sentence')
-            ref = db.collection('answer_log')#question_logに変更する
+            icon = request_data.get('icon')
+            ref = db.collection('question_log')#question_logに変更する
             new_doc = ref.document()
             new_doc.set({
                 'id': new_doc.id,
+                'icon': icon,
                 'faculty': faculty,
                 'question': question_sentence,
                 'date': datetime.datetime.now(pendulum.timezone('Asia/Tokyo')),
@@ -78,13 +80,13 @@ def dblogpage():
     db = firestore.client()
 
     # Firestoreから並び替えたデータを取得する準備
-    ref = db.collection('answer_log')#question_logに変更する
+    ref = db.collection('question_log')#question_logに変更する
 
     ref = ref.order_by('date', direction=firestore.Query.DESCENDING)
     
     docs = ref.stream()
     # Firestoreからデータを取得
-    answer_log_data_list = []
+    question_log_data_list = []
     for doc in docs:
         # 取得したデータをpythonで取り扱えるように変換
         doc_dict = doc.to_dict()
@@ -100,19 +102,21 @@ def dblogpage():
         # 取得してきたデータをJsonのリストに変換
         append_data = {
             'id': doc_dict['id'],
+            'icon': doc_dict['icon'],
             'faculty': doc_dict['faculty'],
             'question': question,
             'date': formatted_date,
             'like': doc_dict['like']
         }
-        answer_log_data_list.append(append_data)
-        print(answer_log_data_list)
+        question_log_data_list.append(append_data)
+        print(question_log_data_list)
+        
         
 
     # テンプレートに取得データのJsonリストを渡す
     return render_template(
         'question_dblog.html',
-        answer_log_data_list=answer_log_data_list
+        question_log_data_list=question_log_data_list
     )
 
 # 過去の質問を選別して取得するルーティング(NEW)
@@ -121,7 +125,7 @@ def dbselect():
     db = firestore.client()
 
     # Firestoreから並び替えたデータを取得する準備
-    ref = db.collection('answer_log')#question_logに変更する
+    ref = db.collection('question_log')#question_logに変更する
 
     ref = ref.order_by('date', direction=firestore.Query.DESCENDING)
     
@@ -137,7 +141,7 @@ def dbselect():
 
     docs = ref.stream()
     # Firestoreからデータを取得
-    answer_log_data_list = []
+    question_log_data_list = []
     for doc in docs:
         # 取得したデータをpythonで取り扱えるように変換
         doc_dict = doc.to_dict()
@@ -157,10 +161,10 @@ def dbselect():
             'date': formatted_date,
             'like': doc_dict['like']
         }
-        answer_log_data_list.append(append_data)
-    print(answer_log_data_list)
+        question_log_data_list.append(append_data)
+    print(question_log_data_list)
     # テンプレートに取得データのJsonリストを渡す
-    return jsonify(answer_log_data_list)
+    return jsonify(question_log_data_list)
 
 # 雑談を受けつけるルーティング
 @app.route('/zatudan', methods=['POST', 'OPTIONS'])
@@ -236,11 +240,11 @@ def zdlogpage():
 def postlike():
     # 「いいね」の対象となる質問のIDを取得
     promptJson = request.json
-    answer_log_id = promptJson['id']
+    question_log_id = promptJson['id']
 
     # 質問IDに一致する質問をFirestoreから取得
-    ref = db.collection('answer_log')#question_logに変更する
-    docs = ref.where('id', '==', answer_log_id).stream()
+    ref = db.collection('question_log')#question_logに変更する
+    docs = ref.where('id', '==', question_log_id).stream()
     
     # 更新前のデータを取得する。（forだが1回しか処理が実行されない）
     for doc in docs:
@@ -248,7 +252,7 @@ def postlike():
         doc_like = doc_dict['like']
 
     # 取得した回答の「いいね」をカウントアップ
-    ref.document(answer_log_id).update({'like': doc_like+1})
+    ref.document(question_log_id).update({'like': doc_like+1})
 
     # カウントアップ後の「いいね」の値をフロントエンドに渡す
     return {'result':doc_like+1}
