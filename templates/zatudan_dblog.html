@@ -7,80 +7,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>雑談画面</title>
     <!--<link rel="stylesheet" href="{{ url_for('static', filename='question_dblog.css') }}" >-->
-    <style>
-        button {
-            background-color:#B6B6B0;  
-        }
-/* スマートフォン画面用のスタイル */
-        @media screen and (max-width: 480px) {
-            td {
-                width: auto; /* 幅の指定 */
-                height: auto; /* 高さは自動調整 */
-                white-space: normal; /* テキストの折り返しを許可 */
-            }
-        }
-/* フッター内の質問するボタンのスタイル */
-        .db-footer {
-            position: fixed;
-            bottom: 20px; /* 画面下からの距離を調整 */
-        }
-
-/* 質問するボタンの共通スタイル */
-        .ask-question-btn {
-            float: right; /* 右側に浮動 */
-            margin-right: 20px; /* 画面右からの距離を調整 */ display: inline-block;
-            padding: 10px 20px;
-            border-radius: 5px;
-            background-color: #43C660;
-            color:#000000;
-            text-decoration: none;
-        }
-/* パソコン向けのスタイル */
-        @media (min-width: 768px) {
-            .ask-question-btn {
-                width:50%;
-                margin:0 auto;
-            }
-        }
-
-/* スマートフォン向けのスタイル */
-        @media (max-width: 398px) {
-            .ask-question-btn {
-                text-align: center; /* ボタンを中央に配置 */
-                margin: 20px auto; /* 上下左右に余白を持たせる */
-                display: block; /* ボタンをブロック要素に変更 */
-                float:right;
-                margin-right:20px;
-            }
-        }
-
-/* パソコン向けのスタイル */
-        @media (min-width: 768px) {
-            .table-wrapper {
-                margin-left: auto;
-                margin-right: auto;
-                width: 100%; /* 必要に応じて幅を指定しま
-            }
-
-            .db-footer {
-                text-align: center; /* フッター内の要素を中央に配置 */
-            }
-        }
-    </style>
 </head>
 
-<style>/*「質問する」に関してはここを編集*/
-    .db-footer {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    /* background-color: #f0f0f0; フッターの背景色 */
-    padding: 10px; /* 適切な余白を追加 */
-    margin-bottom:35px;/*下に余白35pxを入れる*/
+<style>/*「雑談する」に関してはここを編集*/
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+            }
+
+/* 絵文字ボタンの親要素に Flexbox を適用して均等に配置する */
+table tr:last-child {
+    display: flex;
+    justify-content: space-between; /* 要素間の間隔を均等に */
 }
-    .push{
-        height: 80px;
+
+/* 各絵文字ボタンのスタイル */
+button[id^="like-button"] {
+    border: none; /* 枠を削除 */
+    background: none; /* 背景を透明に */
+    cursor: pointer; /* カーソルをポインターに設定 */
+    padding: 0; /* パディングをゼロに設定 */
+    font-size: inherit; /* フォントサイズを継承 */
+    flex: 1; /* 幅を均等にする */
+    text-align: center; /* ボタン内のテキストを中央揃え */
+}
+
+/* 絵文字のボタンから枠を削除 */
+    button[id^="like-button"] 
+    {
+        border: none; /* 枠を削除 */
+        background: none; /* 背景を透明に */
+        cursor: pointer; /* カーソルをポインターに設定 */
+        padding: 0; /* パディングをゼロに設定 */
+        font-size: inherit; /* フォントサイズを継承 */
+    } 
+
+    .db-footer {
+        position: fixed;
+        bottom: 0;
+        width: 5%;
+        /* background-color: #f0f0f0; フッターの背景色 */
+        background-color: #43C660;
+        color: #000000;
+        padding: 10px 20px; /* 適切な余白を追加 */
+        margin-bottom:50px;/*下に余白35pxを入れる*/
+        border-radius: 10px;
+        text-decoration: none;
+        left: 500px;
     }
+
 </style>
 
 <body>
@@ -168,22 +144,22 @@ form.addEventListener("submit", event => {
                     <tr>
                         <td>
                             <button id="like-button1-{{ zatudan_log_data['id'] }}">
-                                (';'){{ zatudan_log_data['like1'] }}
+                                😆{{ zatudan_log_data['like1'] }}
                             </button>
                         </td><!--ボタン1-->
                         <td>
                             <button id="like-button2-{{ zatudan_log_data['id'] }}">
-                                (';'){{ zatudan_log_data['like2'] }}
+                                😍{{ zatudan_log_data['like2'] }}
                             </button>
                         </td><!--ボタン2-->
                         <td>
                             <button id="like-button3-{{ zatudan_log_data['id'] }}">
-                                (';'){{ zatudan_log_data['like3'] }}
+                                😭{{ zatudan_log_data['like3'] }}
                             </button>
                         </td><!--ボタン3-->
                         <td>
                             <button id="like-button4-{{ zatudan_log_data['id'] }}">
-                                (';'){{ zatudan_log_data['like4'] }}
+                                😯{{ zatudan_log_data['like4'] }}
                             </button>
                         </td><!--ボタン4-->
                         <footer class="an-footer">
@@ -216,7 +192,7 @@ form.addEventListener("submit", event => {
                         })
                         .then(data => {
                             // カウントアップ後の「いいね」を「いいね」ボタンに反映
-                            document.getElementById("like-button1-{{ zatudan_log_data['id'] }}").innerHTML = '（’；’）' + data["result"];
+                            document.getElementById("like-button1-{{ zatudan_log_data['id'] }}").innerHTML = '😆' + data["result"];
                         }).finally(() => {
                             console.log("request complete!");
                         });
@@ -241,7 +217,7 @@ form.addEventListener("submit", event => {
                         })
                         .then(data => {
                             // カウントアップ後の「いいね」を「いいね」ボタンに反映
-                            document.getElementById("like-button2-{{ zatudan_log_data['id'] }}").innerHTML = '（’；’）' + data["result"];
+                            document.getElementById("like-button2-{{ zatudan_log_data['id'] }}").innerHTML = '😍' + data["result"];
                         }).finally(() => {
                             console.log("request complete!");
                         });
@@ -266,7 +242,7 @@ form.addEventListener("submit", event => {
                         })
                         .then(data => {
                             // カウントアップ後の「いいね」を「いいね」ボタンに反映
-                            document.getElementById("like-button3-{{ zatudan_log_data['id'] }}").innerHTML = '（’；’）' + data["result"];
+                            document.getElementById("like-button3-{{ zatudan_log_data['id'] }}").innerHTML = ' 😭' + data["result"];
                         }).finally(() => {
                             console.log("request complete!");
                         });
@@ -291,7 +267,7 @@ form.addEventListener("submit", event => {
                         })
                         .then(data => {
                             // カウントアップ後の「いいね」を「いいね」ボタンに反映
-                            document.getElementById("like-button4-{{ zatudan_log_data['id'] }}").innerHTML = '（’；’）' + data["result"];
+                            document.getElementById("like-button4-{{ zatudan_log_data['id'] }}").innerHTML = ' 😯' + data["result"];
                         }).finally(() => {
                             console.log("request complete!");
                         });
