@@ -1,0 +1,29 @@
+/* スマートフォンの画面サイズに対応するメディアクエリ */
+@media only screen and (max-width: 390px) and (max-height: 844px) {
+    h2 {
+        width: 90%; /* h2要素の幅を変更 */
+        margin: 15px auto; /* h2要素のマージンを変更 */
+    }
+
+    .form-select {
+        width: 90%; /* フォームセレクトの幅を変更 */
+        margin: 0 auto; /* フォームセレクトのマージンを変更 */
+    }
+
+    #select_button {
+        right: 5%; /* 学部選択ボタンの位置を変更 */
+    }
+
+    .db-footer {
+        right: 5%; /* フッターの位置を変更 */
+    }
+
+    table {
+        width: 90%; /* テーブルの幅を変更 */
+        margin-top: 10px; /* テーブルのマージンを変更 */
+    }
+
+    td, th {
+        word-wrap: break-word; /* セル内のテキストを適切に折り返す */
+    }
+}

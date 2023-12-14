@@ -7,62 +7,79 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>投稿画面</title>
     <!--<link rel="stylesheet" href="{{ url_for('static', filename='question_dblog.css') }}" >-->
+    <style>
+        h2{
+    color:#000000;
+    background-color:#D9D9D9;
+    text-align:center;
+    margin: 30px auto ;
+    display: block;
+    width:40%;
+}
+
+        .form-select{
+    color:rgba(17, 18, 17, 0.525);
+    background-color:#D9D9D9;
+    font-weight:900;
+    width:40%;
+    display: block;
+    margin: 0 auto ;
+    text-align:center; 
+}
+
+        #select_button {
+    position:fixed;
+    top:18%;
+    right: 22%; /* 画面の右端からの位置 */
+    color:#000000;
+    background-color:#B6B6B0;
+    border-radius: 10px; 
+    padding: 8px 16px; 
+    border: none; 
+    outline: none; 
+    margin: 10px auto;
+    }
+
+        .db-footer {
+    position: fixed;
+    bottom: 7%;
+    right: 22%; /* 画面の右端からの位置 */
+    background-color: #43C660;
+    color: #000000;
+    border-radius: 10px; 
+    padding: 8px 16px; 
+    border: none; 
+    outline: none; 
+    margin: 10px auto;
+
+}
+
+        table{
+    margin: 0 auto;
+    width:40%;
+    margin-top: 20px; /* 上マージンを追加 */
+    display: block;
+}
+
+        table {
+    border-collapse: collapse; /* セルの境界線を結合して一本化 */
+}
+
+        td, th {
+    border: none; /* セルの境界線を削除 */
+    word-wrap: break-word; /* テキストを適切に折り返す */
+}
+    </style>
 </head>
 
-<style>/*「質問する」に関してはここを編集*/
-
-    body {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-            }
-
-    button {
-            background-color:#B6B6B0;  
-        }
-
-    .db-footer {
-        position: fixed;
-        bottom: 0;
-        width: 5%;
-        /* background-color: #f0f0f0; フッターの背景色 */
-        background-color: #43C660;
-        color: #000000;
-        padding: 10px 20px; /* 適切な余白を追加 */
-        margin-bottom:50px;/*下に余白35pxを入れる*/
-        border-radius: 10px;
-        text-decoration: none;
-        left: 500px;
-    }
-    .push{
-        height: 80px;
-    }
-</style>
-
-<style>
-    /* テーブル内の特定のセルに背景色を適用 */
-    table td {
-        padding: 5px; /* セルの余白を設定 */
-    }
-
-    table {
-        border-collapse: collapse; /* セルの境界線を結合して一本化 */
-    }
-
-    td, th {
-        border: none; /* セルの境界線を削除 */
-    }
-</style>
-
-
 <body>
-
     {% include 'header.html' %}
 
+    <div style="height: 50px;"></div>
+    
     <form id="select-content" method="post">
-        <h2>学部選択</h2> 
+
+        <h2>学部選択</h2>  
         <select name="faculty_r" class="form-select"> 
             <option value="情報工学部情報工学科">
                 情報工学部情報工学科
@@ -70,7 +87,9 @@
             <option value="都市情報学部都市情報学科">
                 都市情報学部都市情報学科
             </option>
+
         </select>
+        
         <div>
             <button type="submit" id="select_button">学部選択</button>
         </div>
