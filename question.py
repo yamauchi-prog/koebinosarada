@@ -116,26 +116,19 @@ def dblogpage():
         question_log_data_list=question_log_data_list
     )
 
-# 過去の質問を選別して取得するルーティング(NEW)
-@app.route('/dbselect', methods=['POST', 'OPTIONS'])
-def dbselect():
+
+# 過去の情報工の質問を取得するルーティング
+@app.route('/dbjoho', methods=['GET', 'POST'])
+def dbjoho():
     db = firestore.client()
 
     # Firestoreから並び替えたデータを取得する準備
     ref = db.collection('question_log')#question_logに変更する
+    # データの検索
+    ref = ref.where('faculty', '==', '情報工学部情報工学科')
 
     ref = ref.order_by('date', direction=firestore.Query.DESCENDING)
     
-
-
-    if request.method == 'POST':
-        request_data = request.json
-        print(request.json)
-        faculty_r = request_data.get('faculty_r')
-        print(faculty_r)
-        ref = ref.where('faculty', '==', faculty_r)
-        print('データを受信しました')
-
     docs = ref.stream()
     # Firestoreからデータを取得
     question_log_data_list = []
@@ -145,11 +138,12 @@ def dbselect():
 
         # 取得したデータの改行コードをHTMLの改行に変換
         question = doc_dict['question'].replace('\n', '<br>')
-
+        
         # 日本時間に変換
         date_jp = doc_dict['date'].astimezone(pytz.timezone('Asia/Tokyo'))
         formatted_date = date_jp.strftime('%Y/%m/%d %H:%M:%S')
-    
+
+
         # 取得してきたデータをJsonのリストに変換
         append_data = {
             'id': doc_dict['id'],
@@ -160,11 +154,63 @@ def dbselect():
             'like': doc_dict['like']
         }
         question_log_data_list.append(append_data)
-    print(question_log_data_list)
-    # テンプレートに取得データのJsonリストを渡す
-    return jsonify(question_log_data_list)
+        # print(question_log_data_list)
+        
+        # テンプレートに取得データのJsonリストを渡す
+    return render_template(
+        'question_dblog_j.html',
+        question_log_data_list=question_log_data_list
+    )
 
-# 過去の質問TOP5を取得するルーティング
+# 過去の都市情報の質問を取得するルーティング
+@app.route('/dbtoshi', methods=['GET', 'POST'])
+def dbtoshi():
+    db = firestore.client()
+
+    # Firestoreから並び替えたデータを取得する準備
+    ref = db.collection('question_log')#question_logに変更する
+    # データの検索
+    ref = ref.where('faculty', '==', '都市情報学部都市情報学科')
+
+    ref = ref.order_by('date', direction=firestore.Query.DESCENDING)
+    
+    docs = ref.stream()
+    # Firestoreからデータを取得
+    question_log_data_list = []
+    for doc in docs:
+        # 取得したデータをpythonで取り扱えるように変換
+        doc_dict = doc.to_dict()
+
+        # 取得したデータの改行コードをHTMLの改行に変換
+        question = doc_dict['question'].replace('\n', '<br>')
+        
+        # 日本時間に変換
+        date_jp = doc_dict['date'].astimezone(pytz.timezone('Asia/Tokyo'))
+        formatted_date = date_jp.strftime('%Y/%m/%d %H:%M:%S')
+
+
+        # 取得してきたデータをJsonのリストに変換
+        append_data = {
+            'id': doc_dict['id'],
+            'icon': doc_dict['icon'],
+            'faculty': doc_dict['faculty'],
+            'question': question,
+            'date': formatted_date,
+            'like': doc_dict['like']
+        }
+        question_log_data_list.append(append_data)
+        # print(question_log_data_list)
+        
+        # テンプレートに取得データのJsonリストを渡す
+    return render_template(
+        'question_dblog_t.html',
+        question_log_data_list=question_log_data_list
+    )
+
+
+
+
+# 過去の質問をいいねランキングで取得するルーティング
 @app.route('/dbpro', methods=['GET', 'POST'])
 def dbpro():
     db = firestore.client()
@@ -286,6 +332,105 @@ def zdlogpage():
     )
 
 
+# 過去の情報工の雑談を取得するルーティング
+@app.route('/zatu_joho', methods=['GET', 'POST'])
+def zatu_joho():
+    db = firestore.client()
+
+    # Firestoreから並び替えたデータを取得する準備
+    ref = db.collection('zatudan_log')#question_logに変更する
+    # データの検索
+    ref = ref.where('faculty', '==', '情報工学部情報工学科')
+
+    ref = ref.order_by('date', direction=firestore.Query.DESCENDING)
+    
+    docs = ref.stream()
+    # Firestoreからデータを取得
+    zatudan_log_data_list = []
+    for doc in docs:
+        # 取得したデータをpythonで取り扱えるように変換
+        doc_dict = doc.to_dict()
+
+        # 取得したデータの改行コードをHTMLの改行に変換
+        question = doc_dict['question'].replace('\n', '<br>')
+        
+        # 日本時間に変換
+        date_jp = doc_dict['date'].astimezone(pytz.timezone('Asia/Tokyo'))
+        formatted_date = date_jp.strftime('%Y/%m/%d %H:%M:%S')
+
+
+        # 取得してきたデータをJsonのリストに変換
+        append_data = {
+            'id': doc_dict['id'],
+            'icon': doc_dict['icon'],
+            'faculty': doc_dict['faculty'],
+            'question': question,
+            'date': formatted_date,
+            'like1': doc_dict['like1'],
+            'like2': doc_dict['like2'],
+            'like3': doc_dict['like3'],
+            'like4': doc_dict['like4']
+        }
+        zatudan_log_data_list.append(append_data)
+        # print(question_log_data_list)
+        
+        # テンプレートに取得データのJsonリストを渡す
+    return render_template(
+        'zatudan_dblog_j.html',
+        zatudan_log_data_list=zatudan_log_data_list
+    )
+
+# 過去の都市情報の雑談を取得するルーティング
+@app.route('/zatu_toshi', methods=['GET', 'POST'])
+def zatu_toshi():
+    db = firestore.client()
+
+    # Firestoreから並び替えたデータを取得する準備
+    ref = db.collection('zatudan_log')#question_logに変更する
+    # データの検索
+    ref = ref.where('faculty', '==', '都市情報学部都市情報学科')
+
+    ref = ref.order_by('date', direction=firestore.Query.DESCENDING)
+    
+    docs = ref.stream()
+    # Firestoreからデータを取得
+    zatudan_log_data_list = []
+    for doc in docs:
+        # 取得したデータをpythonで取り扱えるように変換
+        doc_dict = doc.to_dict()
+
+        # 取得したデータの改行コードをHTMLの改行に変換
+        question = doc_dict['question'].replace('\n', '<br>')
+        
+        # 日本時間に変換
+        date_jp = doc_dict['date'].astimezone(pytz.timezone('Asia/Tokyo'))
+        formatted_date = date_jp.strftime('%Y/%m/%d %H:%M:%S')
+
+
+        # 取得してきたデータをJsonのリストに変換
+        append_data = {
+            'id': doc_dict['id'],
+            'icon': doc_dict['icon'],
+            'faculty': doc_dict['faculty'],
+            'question': question,
+            'date': formatted_date,
+            'like1': doc_dict['like1'],
+            'like2': doc_dict['like2'],
+            'like3': doc_dict['like3'],
+            'like4': doc_dict['like4']
+        }
+        zatudan_log_data_list.append(append_data)
+        # print(question_log_data_list)
+        
+        # テンプレートに取得データのJsonリストを渡す
+    return render_template(
+        'zatudan_dblog_t.html',
+        zatudan_log_data_list=zatudan_log_data_list
+    )
+
+
+
+
 #★★★↓追加↓★★★（山内が見たらこのコメントは消して良し）
 # 質問の「いいね」をカウントアップするルーティング
 @app.route('/postlike', methods=['POST'])
@@ -374,13 +519,107 @@ def response_log():
             'like': doc_dict['like']
         }
         response_log_data_list.append(append_data)
-        print(response_log_data_list)
+        # print(response_log_data_list)
 
     # テンプレートに取得データのJsonリストを渡す
     return render_template(
         'answer_dblog.html',
         response_log_data_list=response_log_data_list
     )
+
+
+# 過去の情報工の回答を取得するルーティング
+@app.route('/res_joho', methods=['GET', 'POST'])
+def res_joho():
+    db = firestore.client()
+
+    # Firestoreから並び替えたデータを取得する準備
+    ref = db.collection('response_log')#response_logに変更する
+    # データの検索
+    ref = ref.where('faculty', '==', '情報工学部情報工学科')
+
+    ref = ref.order_by('date', direction=firestore.Query.DESCENDING)
+    
+    docs = ref.stream()
+    # Firestoreからデータを取得
+    response_log_data_list = []
+    for doc in docs:
+        # 取得したデータをpythonで取り扱えるように変換
+        doc_dict = doc.to_dict()
+
+        # 取得したデータの改行コードをHTMLの改行に変換
+        answer = doc_dict['answer'].replace('\n', '<br>')
+        
+        # 日本時間に変換
+        date_jp = doc_dict['date'].astimezone(pytz.timezone('Asia/Tokyo'))
+        formatted_date = date_jp.strftime('%Y/%m/%d %H:%M:%S')
+
+
+        # 取得してきたデータをJsonのリストに変換
+        append_data = {
+            'id': doc_dict['id'],
+            'icon': doc_dict['icon'],
+            'faculty': doc_dict['faculty'],
+            'answer': answer,
+            'date': formatted_date,
+            'like': doc_dict['like']
+        }
+        response_log_data_list.append(append_data)
+        # print(response_log_data_list)
+        
+        # テンプレートに取得データのJsonリストを渡す
+    return render_template(
+        'answer_dblog_j.html',
+        response_log_data_list=response_log_data_list
+    )
+
+
+# 過去の情報工の回答を取得するルーティング
+@app.route('/res_toshi', methods=['GET', 'POST'])
+def res_toshi():
+    db = firestore.client()
+
+    # Firestoreから並び替えたデータを取得する準備
+    ref = db.collection('response_log')#response_logに変更する
+    # データの検索
+    ref = ref.where('faculty', '==', '都市情報学部都市情報学科')
+
+    ref = ref.order_by('date', direction=firestore.Query.DESCENDING)
+    
+    docs = ref.stream()
+    # Firestoreからデータを取得
+    response_log_data_list = []
+    for doc in docs:
+        # 取得したデータをpythonで取り扱えるように変換
+        doc_dict = doc.to_dict()
+
+        # 取得したデータの改行コードをHTMLの改行に変換
+        answer = doc_dict['answer'].replace('\n', '<br>')
+        
+        # 日本時間に変換
+        date_jp = doc_dict['date'].astimezone(pytz.timezone('Asia/Tokyo'))
+        formatted_date = date_jp.strftime('%Y/%m/%d %H:%M:%S')
+
+
+        # 取得してきたデータをJsonのリストに変換
+        append_data = {
+            'id': doc_dict['id'],
+            'icon': doc_dict['icon'],
+            'faculty': doc_dict['faculty'],
+            'answer': answer,
+            'date': formatted_date,
+            'like': doc_dict['like']
+        }
+        response_log_data_list.append(append_data)
+        # print(response_log_data_list)
+        
+        # テンプレートに取得データのJsonリストを渡す
+    return render_template(
+        'answer_dblog_t.html',
+        response_log_data_list=response_log_data_list
+    )
+
+
 
 # 返信の「いいね」をカウントアップするルーティング
 @app.route('/res_good', methods=['POST'])
