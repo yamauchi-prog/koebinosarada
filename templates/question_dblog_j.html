@@ -144,7 +144,7 @@
     
     <form id="select-content" method="post">
 
-        <h2>学部選択</h2>  
+        <h2>情報工学部情報工学科</h2>  
         <select name="faculty_r" class="form-select"> 
             <option value="情報工学部情報工学科">
                 情報工学部情報工学科
@@ -188,6 +188,8 @@
             var colorArray = new Array("#C1EFB9","#B9E8EE","#F2D5F3");
             var color = colorArray[Math.floor( Math.random() * colorArray.length)];
             // colorに色の変数が入っている
+            // sessionStorage にデータを保存
+            sessionStorage.setItem("id", "{{ question_log_data['id'] }}");
 
         </script>
         <p>
@@ -212,10 +214,7 @@
                         </td><!--↑♡ボタン↑-->
                         <footer class="an-footer">
                             <td colspan="2">
-                                <button id="res_req" style="float: right; margin-right: 5%;">
-                                    <a href="{{ url_for('answerpage')}}">返信</a>
-                                </button>
-                            </td><!--返信ボタン-->
+                                <button id="res_req" style="float: right; margin-right: 5%;"><a href="{{ url_for('answerpage')}}">返信</a></button></td><!--返信ボタン-->
                         </footer>
                     </tr>
                 </tbody>
