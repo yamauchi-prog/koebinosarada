@@ -96,63 +96,10 @@
 
     </form>
     <div id="answer_text"></div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', (event) => {
-            const button = document.getElementById("select_button");
-            const form = document.getElementById("select-content");
-            const answerText = document.getElementById("answer_text");
-
-            console.log(answerText); // this is just for debugging
-
-            form.addEventListener("submit", event => {
-                // prevent the form from submitting normally
-                event.preventDefault();
-
-                const faculty_r = form.faculty_r.value;
-                const postData = {
-                    "faculty_r": faculty_r
-                };
-
-                // making a POST request to the "/dbselect" endpoint
-                fetch("/dbselect", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json; charset=utf-8" },
-                    body: JSON.stringify(postData)
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(response.statusText);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (!data || !data.answer) {
-                        throw new Error('Invalid response data');
-                    }
-
-                    // reflecting the answer data to the text box
-                    answerText.innerHTML = data.answer;
-                })
-                .catch(error => {
-                    // error handling
-                    console.error('Error:', error);
-                })
-                .finally(() => {
-                    console.log("request complete!")
-                });
-            });
-        });
-    </script>
-
+    
 <div class="-wrapper">
         {% for question_log_data in question_log_data_list %}
         <!-- テーブル形式で回答データを表示 -->
-        <script>
-            var colorArray = new Array("#C1EFB9","#B9E8EE","#F2D5F3");
-            var color = colorArray[Math.floor( Math.random() * colorArray.length)];
-            // colorに色の変数が入っている
-        </script>
         <p>
             <table border="1">
                 <tbody>
@@ -175,7 +122,7 @@
                         </td><!--↑♡ボタン↑-->
                         <footer class="an-footer">
                             <td colspan="2">
-                                <button id="res_req" style="float: right; margin-right: 5%;">返信</button></td><!--返信ボタン-->
+                                <button style="float: right; margin-right: 5%;"><a href="{{ url_response}}">返信</a></button></td><!--返信ボタン-->
                         </footer>
                     </tr>
                 </tbody>
@@ -183,26 +130,6 @@
         </p>
 
         <script>
-            // 「返信」ボタンのelementを取得 
-            document.getElementById("res_req").
-                addEventListener("click", ev => {
-
-                    // バックエンドに「いいね」のカウントアップをリクエスト
-                    fetch("answerpage", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json; charset=utf-8" },
-                        body: JSON.stringify({ "reid": "{{ question_log_data['id'] }}" })
-                    })
-                        .then(response => {
-                            return response.json();
-                        })
-                        .then(data => {
-                            answerText.innerHTML = data.answer;
-                        }).finally(() => {
-                            console.log("request complete!");
-                        });
-                });
-
 
             // 「いいね」ボタンのelementを取得 
             document.getElementById("like-button-{{ question_log_data['id'] }}").
