@@ -33,6 +33,11 @@ def inquiry():
 def zatudan():
         return render_template('zatudan.html')
 
+# 回答
+@app.route("/answerpage", methods=['GET'])
+def answerpage():
+        return render_template('question_answer.html')
+
 #画像の指定
 @app.route('/iconimage')
 def iconimage():
@@ -316,12 +321,10 @@ def response():
             faculty = request_data.get('faculty')
             answer_sentence = request_data.get('answer_sentence')
             icon = request_data.get('icon')
-            reid = request_data.get('reid')
             ref = db.collection('response_log')
             new_doc = ref.document()
             new_doc.set({#どのidの質問に答えたかも記録する
                 'id': new_doc.id,
-                'reid': reid,
                 'icon': icon,
                 'faculty': faculty,
                 'answer': answer_sentence,
@@ -330,7 +333,7 @@ def response():
             })
 
         # フロントエンドへ結果を渡す
-            return jsonify({'response': '質問が受け付けられました。'})
+            return jsonify({'response': '回答が受け付けられました。'})
 
         except Exception as e:
             print(f"Error processing request: {e}")
@@ -338,17 +341,12 @@ def response():
 
 
 # 過去の返信を取得するルーティング
-@app.route('/answerpage', methods=['GET','POST'])
-def answerpage():
-    print('バックエンド')
+@app.route('/response_log', methods=['GET','POST'])
+def response_log():
     db = firestore.client()
-    # 「いいね」の対象となる質問のIDを取得
-    promptJson = request.json
-    question_log_id = promptJson['reid']
 
     # 質問IDに一致する質問をFirestoreから取得
     ref = db.collection('response_log')
-    docs = ref.where('reid', '==', question_log_id).stream()
 
     ref = ref.order_by('date', direction=firestore.Query.DESCENDING)
 
@@ -369,7 +367,6 @@ def answerpage():
         # 取得してきたデータをJsonのリストに変換
         append_data = {#どのidの質問に答えたかも記録する
             'id': doc_dict['id'],
-            'reid': doc_dict['reid'],
             'icon': doc_dict['icon'],
             'faculty': doc_dict['faculty'],
             'answer': answer,
@@ -381,7 +378,7 @@ def answerpage():
 
     # テンプレートに取得データのJsonリストを渡す
     return render_template(
-        'question_answer.html',
+        'answer_dblog.html',
         response_log_data_list=response_log_data_list
     )
 
