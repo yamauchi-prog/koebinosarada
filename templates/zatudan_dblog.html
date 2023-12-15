@@ -24,6 +24,31 @@
             background-color: #C1EFB9; /* 別の背景色を指定 */
         }
 
+        table:nth-of-type(5) {
+            background-color: #F2D5F3; /* 別の背景色を指定 */
+        }
+
+        table:nth-of-type(6) {
+            background-color: #B9E8EE; /* 別の背景色を指定 */
+        }
+
+        table:nth-of-type(7) {
+            background-color: #C1EFB9; /* 別の背景色を指定 */
+        }
+
+        table:nth-of-type(8) {
+            background-color: #F2D5F3; /* 別の背景色を指定 */
+        }
+
+        table:nth-of-type(9) {
+            background-color: #B9E8EE; /* 別の背景色を指定 */
+        }
+
+        table:nth-of-type(10) {
+            background-color: #C1EFB9; /* 別の背景色を指定 */
+        }
+
+
         /* テーブル内の特定のセルに背景色を適用 */
         table td {
             padding: 5px; /* セルの余白を設定 */
@@ -35,14 +60,14 @@
         text-align:center;
         margin: 30px auto ;
         display: block;
-        width:40%;
+        width:35%;
     }
 
             .form-select{
         color:rgba(17, 18, 17, 0.525);
         background-color:#D9D9D9;
         font-weight:900;
-        width:40%;
+        width:35%;
         display: block;
         margin: 0 auto ;
         text-align:center; 
@@ -91,18 +116,21 @@
 
         }
 
-                table{
+        table{
             margin: 0 auto;
-            width:40%;
+            width:35%;
             margin-top: 20px; /* 上マージンを追加 */
             display: block;
+            table-layout: fixed; /* テーブルの横幅を均等に設定 */
+            border-collapse: separate; /* セルの境界線を別々に表示 */
+            border-radius: 15px; /* 角を丸くする半径を設定 */
+            overflow: hidden; /* 角を丸くするためのオーバーフロー制御 */
         }
-
         td, th {
-    border: none; /* セルの境界線を削除 */
-    word-wrap: break-word; /* テキストを適切に折り返す */
-    padding: 8px; /* セル内のコンテンツとセルの境界との間に8pxの余白を追加 */
-}
+            border: none; /* セルの境界線を削除 */
+            word-wrap: break-word; /* テキストを適切に折り返す */
+            padding: 8px; /* セル内のコンテンツとセルの境界との間に8pxの余白を追加 */
+        }
 
     </style>
 </head>
@@ -187,8 +215,8 @@ form.addEventListener("submit", event => {
                         <td>{{ zatudan_log_data["faculty"] }}</td><!--学部-->
                     </tr>
                     <tr>
-                        <td nowrap>質問内容</td>
-                        <td colspan="2">{{ zatudan_log_data["question"]|safe }}</td><!--質問内容-->
+                        <td nowrap>雑談</td>
+                        <td colspan="2">{{ zatudan_log_data["question"]|safe }}</td><!--雑談-->
                     </tr>
                     <tr>
                         <td>
