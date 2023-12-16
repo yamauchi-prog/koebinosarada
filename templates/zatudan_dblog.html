@@ -87,7 +87,6 @@
 
             /* 絵文字ボタンの親要素に Flexbox を適用して均等に配置する */
             table tr:last-child {
-                display: flex;
                 justify-content: space-between; /* 要素間の間隔を均等に */
             }
 
@@ -187,37 +186,37 @@
             <table border="1">
                 <tbody>
                     <tr>
-                        <td rowspan="1" nowrap id="selectedImage"><img src='{{ zatudan_log_data["icon"] }}' width="25px" alt="匿名M"></td>
-                        <td>{{ zatudan_log_data["date"] }}</td>
-                        <td>{{ zatudan_log_data["faculty"] }}</td><!--学部-->
+                        <td nowrap id="selectedImage"><img src='{{ zatudan_log_data["icon"] }}' width="25px" alt="匿名M"></td>
+                        <td colspan="2">{{ zatudan_log_data["date"] }}</td>
+                        <td colspan="2">{{ zatudan_log_data["faculty"] }}</td><!--学部-->
                     </tr>
                     <tr>
                         <td nowrap>雑談</td>
-                        <td colspan="2">{{ zatudan_log_data["question"]|safe }}</td><!--雑談-->
+                        <td colspan="4">{{ zatudan_log_data["question"]|safe }}</td><!--雑談-->
                     </tr>
                     <tr>
-                        <td>
+                        <td colspan="1" style="width: calc(100%/5);">
                             <button id="like-button1-{{ zatudan_log_data['id'] }}">
                                 😆{{ zatudan_log_data['like1'] }}
                             </button>
                         </td><!--ボタン1-->
-                        <td>
+                        <td colspan="1" style="width: calc(100%/5);">
                             <button id="like-button2-{{ zatudan_log_data['id'] }}">
                                 😍{{ zatudan_log_data['like2'] }}
                             </button>
                         </td><!--ボタン2-->
-                        <td>
+                        <td colspan="1" style="width: calc(100%/5);">
                             <button id="like-button3-{{ zatudan_log_data['id'] }}">
                                 😭{{ zatudan_log_data['like3'] }}
                             </button>
                         </td><!--ボタン3-->
-                        <td>
+                        <td colspan="1" style="width: calc(100%/5);">
                             <button id="like-button4-{{ zatudan_log_data['id'] }}">
                                 😯{{ zatudan_log_data['like4'] }}
                             </button>
                         </td><!--ボタン4-->
                         <footer class="an-footer">
-                            <td colspan="2">
+                            <td colspan="1" style="width: calc(100%/5);">
                                 <button style="float: right; margin-right: 10%;"><a href="{{ url_for('answerpage') }}">返信</a></button></td><!--返信ボタン-->
                         </footer>
                     </tr>
@@ -296,7 +295,7 @@
                         })
                         .then(data => {
                             // カウントアップ後の「いいね」を「いいね」ボタンに反映
-                            document.getElementById("like-button3-{{ zatudan_log_data['id'] }}").innerHTML = ' 😭' + data["result"];
+                            document.getElementById("like-button3-{{ zatudan_log_data['id'] }}").innerHTML = '😭' + data["result"];
                         }).finally(() => {
                             console.log("request complete!");
                         });
@@ -321,7 +320,7 @@
                         })
                         .then(data => {
                             // カウントアップ後の「いいね」を「いいね」ボタンに反映
-                            document.getElementById("like-button4-{{ zatudan_log_data['id'] }}").innerHTML = ' 😯' + data["result"];
+                            document.getElementById("like-button4-{{ zatudan_log_data['id'] }}").innerHTML = '😯' + data["result"];
                         }).finally(() => {
                             console.log("request complete!");
                         });
