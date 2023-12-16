@@ -81,6 +81,12 @@
     padding: 8px; /* セル内のコンテンツとセルの境界との間に8pxの余白を追加 */
 }
 
+  h3{
+    color:black;
+    font-size:30px ;
+  }
+
+
 </style>
 <body>
   {% include 'header.html' %}
@@ -115,6 +121,7 @@
 
   <div style="height: 300px;"></div>
   <div class="-wrapper">
+    <h3 style="text-align: center;">いいねランキング</h3>
     {% for question_log_data in question_log_data_list %}
     <!-- テーブル形式で回答データを表示 -->
     <p>
