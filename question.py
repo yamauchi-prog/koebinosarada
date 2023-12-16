@@ -466,11 +466,14 @@ def response():
             faculty = request_data.get('faculty')
             answer_sentence = request_data.get('answer_sentence')
             icon = request_data.get('icon')
+            question = request_data.get('question')
+            print(question)
             ref = db.collection('response_log')
             new_doc = ref.document()
             new_doc.set({#どのidの質問に答えたかも記録する
                 'id': new_doc.id,
                 'icon': icon,
+                'question': question,
                 'faculty': faculty,
                 'answer': answer_sentence,
                 'date': datetime.datetime.now(pendulum.timezone('Asia/Tokyo')),
@@ -513,6 +516,7 @@ def response_log():
         append_data = {#どのidの質問に答えたかも記録する
             'id': doc_dict['id'],
             'icon': doc_dict['icon'],
+            'question':doc_dict['question'],
             'faculty': doc_dict['faculty'],
             'answer': answer,
             'date': formatted_date,

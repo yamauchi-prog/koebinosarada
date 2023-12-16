@@ -146,7 +146,7 @@
                     </td><!--↑♡ボタン↑-->
                     <td colspan="2">
                       <footer class="an-footer">
-                            <button style=" right: 5%;"><a href="{{ url_for('answerpage') }}">返信</a></button><!--返信ボタン-->
+                            <button style=" right: 5%;" id="response-{{ question_log_data['id']}}">返信</button><!--返信ボタン-->
                     </footer>
                   </td>
                 </tr>
@@ -155,6 +155,15 @@
     </p>
 
     <script>
+        document.getElementById("response-{{ question_log_data['id'] }}").
+        addEventListener("click", ev => {
+
+            sessionStorage.setItem("question", '{{ question_log_data["question"]|tojson|safe}}')
+            console.log("{{ question_log_data['question']}}")
+            window.location.href = "{{url_for('answerpage')}}"	
+        });
+
+
 
 
         // 「いいね」ボタンのelementを取得 

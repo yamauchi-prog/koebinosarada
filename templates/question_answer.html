@@ -40,6 +40,7 @@
         const button = document.getElementById("submit_button");
         const responseText = document.getElementById("response_text");
         const form = document.getElementById("content-answer");
+        const question = sessionStorage.getItem("question")
 
 // バックエンドに対して回答データを保存
 form.addEventListener("submit", event => {
@@ -51,6 +52,8 @@ form.addEventListener("submit", event => {
     const answer_sentence = form.answer_sentence.value;
     // sessionStorage に保存したデータを取得
     const icon = sessionStorage.getItem("icon");
+    const question = sessionStorage.getItem("question")
+    console.log(question)
     
     // ★回答フォームに文字列を書き込み
     responseText.innerHTML = `${faculty}での回答：「${answer_sentence}」`;
@@ -59,6 +62,7 @@ form.addEventListener("submit", event => {
     const postData = {
         "faculty": faculty,
         "answer_sentence": answer_sentence,
+        "question": question,
         "icon": icon,
     };
 

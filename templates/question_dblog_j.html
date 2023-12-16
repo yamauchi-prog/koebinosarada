@@ -214,14 +214,23 @@
                         </td><!--↑♡ボタン↑-->
                         <footer class="an-footer">
                             <td colspan="2">
-                                <button id="res_req" style="float: right; margin-right: 5%;"><a href="{{ url_for('answerpage')}}">返信</a></button></td><!--返信ボタン-->
+                            <button style=" right: 5%;" id="response-{{ question_log_data['id']}}">返信</button><!--返信ボタン--></td>
                         </footer>
                     </tr>
                 </tbody>
             </table>
         </p>
 
-        <script>
+    <script>
+        document.getElementById("response-{{ question_log_data['id'] }}").
+        addEventListener("click", ev => {
+
+            sessionStorage.setItem("question", '{{ question_log_data["question"]|tojson|safe}}')
+            console.log("{{ question_log_data['question']}}")
+            window.location.href = "{{url_for('answerpage')}}"	
+        });
+
+        
             // 「いいね」ボタンのelementを取得 
             document.getElementById("like-button-{{ question_log_data['id'] }}").
                 addEventListener("click", ev => {

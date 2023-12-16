@@ -217,7 +217,7 @@
                         </td><!--ボタン4-->
                         <footer class="an-footer">
                             <td colspan="1" style="width: calc(100%/5);">
-                                <button style="float: right; margin-right: 10%;"><a href="{{ url_for('answerpage') }}">返信</a></button></td><!--返信ボタン-->
+                                <button style="float: right; margin-right: 10%;" id="response-{{ zatudan_log_data['id']}}">返信</button></td><!--返信ボタン-->
                         </footer>
                     </tr>
                 </tbody>
@@ -225,6 +225,14 @@
         </p>
 
         <script>
+            document.getElementById("response-{{ zatudan_log_data['id'] }}").
+            addEventListener("click", ev => {
+    
+                sessionStorage.setItem("question", '{{ zatudan_log_data["question"]|tojson|safe}}')
+                console.log("{{ zatudan_log_data['question']}}")
+                window.location.href = "{{url_for('answerpage')}}"	
+            });
+
 
             // 「いいね1」ボタンのelementを取得
             document.getElementById("like-button1-{{ zatudan_log_data['id'] }}").
